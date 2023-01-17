@@ -40,6 +40,16 @@ class AnsaldoBazsazController extends Controller
     }
     
     
+    
+   /**
+     * In this method we authorize the person who wants to open the form which we can initialize base information in this software
+     * such as power  plant name,company name, maintenance types and ...
+     * first we get the id , first name and last name of current user.then we retrieve the groups that our user belongs to.
+     * then we get the roles of this user from different groups which this user belongs to after first foreach.
+     * in the second foreach we get the name of roles of this user that has and if it was admin or track_base_tables 
+     * we return the view of ansaldo_base_tables and at the same time we pass the name of companies and power plant names to this view
+     * if this user did not have acceptable roles to open this view we will return access_denied instead.
+     */ 
     public function create()
     {
        $user = auth()->user()->id;
@@ -54,14 +64,6 @@ class AnsaldoBazsazController extends Controller
                         $role_name=Role::where('id_role',$grouprole['id_role'])->first();
                         if($role_name['role'] ==="admin" or $role_name['role'] ==="track_base_tables"){
                            $allow=1;
-                           $g_y = Carbon::now()->year;
-                           $g_m = Carbon::now()->month;
-                           $g_d = Carbon::now()->day;
-                           $Calendar=new CalendarHelper();
-                           $date_shamsi_array=$Calendar->gregorian_to_jalali($g_y, $g_m, $g_d);
-                           $date_shamsi=$date_shamsi_array[0].'/'.$date_shamsi_array[1].'/'.$date_shamsi_array[2];
-                           $mytime=Carbon::now();
-                           $part = auth()->user()->id_request_part;
                            $requests=Ansaldo_bazsaz::all();
                            $pps=Ansaldo_nirogah_name::all();
                            return view('Ansaldo.ansaldo_base_tables',compact('requests','pps'));
