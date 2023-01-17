@@ -90,7 +90,11 @@ class AnsaldoBazsazController extends Controller
     
     
     
-    
+    /**
+     * In this method we remove a row from ansaldo_bazsazs table with specific id but this id should not be used in 
+     * ansaldo_send_bazsazi_ghataats table so first we compute the number this id which exists in this table and if
+     * the number of id in this table as forign key was zero we can remove this row from its original table.
+     */ 
     public function delete($id){
         $n= DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_BA',$id)->get()->count();
         if($n==0){
@@ -100,6 +104,11 @@ class AnsaldoBazsazController extends Controller
             return response()->json(['success'=>'hi','n'=>$n]);
         }
     }
+    
+    
+    
+    
+    
     public function bazsaz_edit(Request $request)
     {
         $id_ba=$request->input('ID_BA_EDIT');
