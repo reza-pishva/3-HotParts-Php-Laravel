@@ -36,48 +36,47 @@ class AnsaldoBazsazController extends Controller
         $bazsaz->ID_USER=$id_user;
         $bazsaz->save();
         $id_ba = DB::table('ansaldo_bazsazs')->where('ID_USER',$id_user)->orderBy('ID_BA', 'DESC')->first()->ID_BA;
-        return response()->json(['success'=>'hi','id_ba'=>$id_ba]);
+        return response()->json(['success'=>'true','id_ba'=>$id_ba]);
     }
     
     
     public function create()
     {
-                        //--access level-----
-                        $user = auth()->user()->id;
-                        $f_name=auth()->user()->f_name;
-                        $l_name=auth()->user()->l_name;
-                        $full_name=$f_name.' '.$l_name;
-                        $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
-                        $allow=0;
-                        foreach ($groupusers as $groupuser) {
-                            $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
-                            foreach ($grouproles as $grouprole) {
-                
-                                $role_name=Role::where('id_role',$grouprole['id_role'])->first();
-                                if($role_name['role'] ==="admin" or $role_name['role'] ==="track_base_tables"){
-                                    $allow=1;
-                                    $g_y = Carbon::now()->year;
-                                    $g_m = Carbon::now()->month;
-                                    $g_d = Carbon::now()->day;
-                                    $Calendar=new CalendarHelper();
-                                    $date_shamsi_array=$Calendar->gregorian_to_jalali($g_y, $g_m, $g_d);
-                                    $date_shamsi=$date_shamsi_array[0].'/'.$date_shamsi_array[1].'/'.$date_shamsi_array[2];
-                                    $mytime=Carbon::now();
-                                    $part = auth()->user()->id_request_part;
-                                    $requests=Ansaldo_bazsaz::all();
-                                    $pps=Ansaldo_nirogah_name::all();
-                                    return view('Ansaldo.ansaldo_base_tables',compact('requests','pps'));
-                                }
-                
-                            }
+       $user = auth()->user()->id;
+       $f_name=auth()->user()->f_name;
+       $l_name=auth()->user()->l_name;
+       $full_name=$f_name.' '.$l_name;
+       $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
+       $allow=0;
+       foreach ($groupusers as $groupuser) {
+               $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
+               foreach ($grouproles as $grouprole) {
+                        $role_name=Role::where('id_role',$grouprole['id_role'])->first();
+                        if($role_name['role'] ==="admin" or $role_name['role'] ==="track_base_tables"){
+                           $allow=1;
+                           $g_y = Carbon::now()->year;
+                           $g_m = Carbon::now()->month;
+                           $g_d = Carbon::now()->day;
+                           $Calendar=new CalendarHelper();
+                           $date_shamsi_array=$Calendar->gregorian_to_jalali($g_y, $g_m, $g_d);
+                           $date_shamsi=$date_shamsi_array[0].'/'.$date_shamsi_array[1].'/'.$date_shamsi_array[2];
+                           $mytime=Carbon::now();
+                           $part = auth()->user()->id_request_part;
+                           $requests=Ansaldo_bazsaz::all();
+                           $pps=Ansaldo_nirogah_name::all();
+                           return view('Ansaldo.ansaldo_base_tables',compact('requests','pps'));
                         }
-                
-                        if($allow===0){
-                            return view('access_denied');
-                        }
-                        //--access level-----
-        
+               }
+       }
+       if($allow===0){
+         return view('access_denied');
+       }
     }
+    
+    
+    
+    
+    
     public function bazsaz_total()
     {
         $data = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
