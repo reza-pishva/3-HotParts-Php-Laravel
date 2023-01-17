@@ -5,7 +5,6 @@ use App\Ansaldo_bazsaz;
 use App\Ansaldo_nirogah_name;
 use App\User;
 use App\CalendarHelper;
-//use App\AnsaldoBazsaz;
 use Carbon\Carbon;
 use App\Exit_goods_permission;
 use App\Form;
@@ -22,8 +21,13 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoBazsazController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * In this method we store the name of company that we want to send our equipment for reconstruction.
+     * in first line we get the id of user who wants to store the name of company.
+     * We create an instance from the model of company name table.
+     * then we get the name of company from its form and fill the property of our instance.
+     * we fill the id_user property of our instance.
+     * then we save them into 'ansaldo_bazsazs' and we get the id of this record and send it to the view of this form to be able to
+     * change the color of this new record in the table
      */
     public  function bazsaz_store(Request $request){
         $id_user=auth()->user()->id;
@@ -32,8 +36,10 @@ class AnsaldoBazsazController extends Controller
         $bazsaz->ID_USER=$id_user;
         $bazsaz->save();
         $id_ba = DB::table('ansaldo_bazsazs')->where('ID_USER',$id_user)->orderBy('ID_BA', 'DESC')->first()->ID_BA;
-        return response()->json(['success'=>'hi','id_ba'=>$id_ba]);//,'id_ba'=>$id_ba
+        return response()->json(['success'=>'hi','id_ba'=>$id_ba]);
     }
+    
+    
     public function create()
     {
                         //--access level-----
@@ -90,9 +96,7 @@ class AnsaldoBazsazController extends Controller
     {
         $id_ba=$request->input('ID_BA_EDIT');
         $bazsaz=$request->input('BAZSAZ_EDIT');
-//        dd($id_ba);
-        Ansaldo_bazsaz::where('ID_BA', $id_ba)->update([
-            'BAZSAZ'=>$bazsaz]);
+        Ansaldo_bazsaz::where('ID_BA', $id_ba)->update(['BAZSAZ'=>$bazsaz]);
         return response()->json(['success'=>'the information has successfuly saved']);
     }
 
