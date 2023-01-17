@@ -4,14 +4,8 @@ namespace App\Http\Controllers;
 use App\Ansaldo_bazsaz;
 use App\Ansaldo_nirogah_name;
 use App\User;
-use App\CalendarHelper;
-use Carbon\Carbon;
-use App\Exit_goods_permission;
-use App\Form;
-use App\Goodstype;
 use App\Grouprole;
 use App\Groupuser;
-use App\Request_level;
 use App\Role;
 use App\User_role;
 use Illuminate\Http\Request;
@@ -108,7 +102,9 @@ class AnsaldoBazsazController extends Controller
     
     
     
-    
+    /**
+     * here we get the id and name of company to replace and then we update this row with new company name
+     */ 
     public function bazsaz_edit(Request $request)
     {
         $id_ba=$request->input('ID_BA_EDIT');
