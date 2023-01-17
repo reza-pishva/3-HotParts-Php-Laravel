@@ -78,12 +78,19 @@ class AnsaldoBazsazController extends Controller
     
     
     
-    
+    /**
+     * In this method we pass total rows of ansaldo_bazsazs table to our view
+     */ 
     public function bazsaz_total()
     {
-        $data = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
+        $data = Ansaldo_bazsaz::all();
         return response()->json(['results'=> $data]);
     }
+    
+    
+    
+    
+    
     public function delete($id){
         $n= DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_BA',$id)->get()->count();
         if($n==0){
