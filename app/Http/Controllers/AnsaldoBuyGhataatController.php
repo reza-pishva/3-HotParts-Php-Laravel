@@ -147,13 +147,19 @@ class AnsaldoBuyGhataatController extends Controller
         $data = DB::table('ansaldo_buy_ghataats')->where('ID_T',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
     }
+     /**
+     * In this method we remove a row from ansaldo_buy_ghataats.but we should note that the id 
+     * that we want to remove from this table should not be used in ansaldo_savabeghs table as forign key.
+     * then we send the id to our view and set perm(permission) one for removing.
+     * otherwise we  set perm(permission) zero to the view to show appropriate alert to the user.
+     */   
     public function delete($id){
         $n= Ansaldo_savabegh::where('ID_T', $id)->where('SAV_TYPE','KH')->get()->count();
         if($n==0){
             Ansaldo_buy_ghataat::where('ID_T', $id)->delete();
-            return response()->json(['success'=>'hi','id_t'=>$id,'perm'=>1]);
+            return response()->json(['success'=>'true','id_t'=>$id,'perm'=>1]);
         }else{
-            return response()->json(['success'=>'hi','perm'=>0]);
+            return response()->json(['success'=>'true','perm'=>0]);
         }
     }
     public function edit(Request $request)
