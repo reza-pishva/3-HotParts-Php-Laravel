@@ -160,9 +160,7 @@ class AnsaldoBuyGhataatController extends Controller
             return response()->json(['success'=>'true','perm'=>0]);
         }
     }
-    
-    
-     /**
+    /**
      * In this method we are going to edit the fields of ansaldo_buy_ghataats table with specific id
      */
     public function edit(Request $request)
@@ -239,6 +237,10 @@ class AnsaldoBuyGhataatController extends Controller
         $requests = DB::select(DB::raw($query));
         return response()->json(['results'=> $requests,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
     }
+     /**
+     * In this method we are going to get a row from ansaldo_buy_ghataats by having its primary key.
+     * we will send its results along with some base information which we got in the first two lines.
+     */
     public function report_queryp5($id)
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
@@ -246,11 +248,13 @@ class AnsaldoBuyGhataatController extends Controller
         $data = DB::table('ansaldo_buy_ghataats')->where('ID_T',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
     }
+    /**
+     * In this method we are going to create a report from ansaldo_buy_ghataats table.
+     * first we get some information from base tables which we want to use them in where part of our select command.
+     */
     public function get_history($id)
     {
-        //$data = DB::table('ansaldo_buy_prog_view')->where('ID_T',$id)->where('SAV_TYPE','KH')->get()->toArray();
         $data = DB::table('ansaldo_tamirat_prog_view')->where('ID_T',$id)->where('SAV_TYPE','KH')->get()->toArray();
         return response()->json(['results'=> $data]);
-
     }
 }
