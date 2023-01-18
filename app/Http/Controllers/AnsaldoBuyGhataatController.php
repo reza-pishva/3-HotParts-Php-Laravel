@@ -46,8 +46,7 @@ class AnsaldoBuyGhataatController extends Controller
         $atp->ID_USER=$id_user;
         $atp->save();
         return response()->json(['message'=> 'this request successfully was saved']);
-    }
-    
+    }   
     
     /**
      * In this method we authorize the person who wants to open the form which we can initialize buy request information in this software
@@ -83,8 +82,6 @@ class AnsaldoBuyGhataatController extends Controller
           }
     }
     
-    
-    
     /**
      * In this method we get the total rows from ansaldo_out_ghataats table. this table is used to store the cases that we send outside of company 
      * for reconstruction. 
@@ -97,10 +94,6 @@ class AnsaldoBuyGhataatController extends Controller
         $data = DB::table('ansaldo_out_ghataats')->orderBy('ID_T', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
-    
-    
-    
-    
     
   /**
      * In this method we are going to get the rows that current user has created during the day he has worked with this software.
@@ -127,15 +120,20 @@ class AnsaldoBuyGhataatController extends Controller
         $data = DB::table('ansaldo_out_ghataats')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_T', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'current_date_shamsi'=>$g_d]);
     }
+     
+     /**
+     * In this method we are going to get the rows that current user has created.
+     * then we get the last row created by current user in ansaldo_buy_ghataats table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table and equpment sellers from ansaldo_sellers to our view.
+     */    
     public function onlyone()
     {
         $id_user = auth()->user()->id;
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_SES = DB::table('ansaldo_sellers')->where('ID_SE','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $ID_SES = DB::table('ansaldo_sellers')->get()->toArray();
         $ID_T= Ansaldo_buy_ghataat::where('id_user',$id_user)->orderBy('ID_T', 'desc')->first()->ID_T;
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_buy_ghataats')->where('ID_T',$ID_T)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'ID_SES'=>$ID_SES]);
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
     }
     public function onlyone2($id)
     {
