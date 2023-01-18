@@ -122,7 +122,7 @@ class AnsaldoBuyGhataatController extends Controller
     }
      
      /**
-     * In this method we are going to get the rows that current user has created.
+     * In this method we are going to get the rows from ansaldo_buy_ghataats table that current user has created.
      * then we get the last row created by current user in ansaldo_buy_ghataats table.
      * in addition to this data we send type of equipment from ansaldo_type_ghataats table and equpment sellers from ansaldo_sellers to our view.
      */    
@@ -134,15 +134,18 @@ class AnsaldoBuyGhataatController extends Controller
         $ID_T= Ansaldo_buy_ghataat::where('id_user',$id_user)->orderBy('ID_T', 'desc')->first()->ID_T;
         $data = DB::table('ansaldo_buy_ghataats')->where('ID_T',$ID_T)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
-    }
+    }   
+    
+     /**
+     * In this method we are going to get the rows from ansaldo_buy_ghataats with specific id from ansaldo_tamirat_programs table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table and equpment sellers from ansaldo_sellers to our view.
+     */    
     public function onlyone2($id)
     {
-        $id_user = auth()->user()->id;
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_SES = DB::table('ansaldo_sellers')->where('ID_SE','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $ID_SES = DB::table('ansaldo_sellers')->get()->toArray();
         $data = DB::table('ansaldo_buy_ghataats')->where('ID_T',$id)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'ID_SES'=>$ID_SES]);
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
     }
     public function delete($id){
         $n= Ansaldo_savabegh::where('ID_T', $id)->where('SAV_TYPE','KH')->get()->count();
