@@ -249,8 +249,7 @@ class AnsaldoBuyGhataatController extends Controller
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
     }
     /**
-     * In this method we are going to create a report from ansaldo_buy_ghataats table.
-     * first we get some information from base tables which we want to use them in where part of our select command.
+     * In this method we are going to get results from ansaldo_tamirat_prog_view.this results related to id of ansaldo_tamirat_programs table.
      */
     public function get_history($id)
     {
