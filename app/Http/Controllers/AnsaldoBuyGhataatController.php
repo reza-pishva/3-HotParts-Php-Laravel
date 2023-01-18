@@ -197,11 +197,19 @@ class AnsaldoBuyGhataatController extends Controller
         $englishNumbersOnly = str_replace($persian, $num, $string);
         return $englishNumbersOnly;
     }
+     /**
+     * In this method we are going to create a report from ansaldo_buy_ghataats table.
+     * first we get some information from base tables which we want to use them in where part of our select command.
+     * then we will get some data from our search form to be used in where part of our select command as well.
+     * for the field that we do not want to set anything in our where part we will use '>0' for their id to cover all possible values.
+     * in the end we stick all these part together to create a raw query.
+     * after that we will save this query string and the id of the user who creates this report in the querytext table.
+     * then we will use DB::select command to use this raw query and send it to our view as json file.
+     */
     public function report_queryp(Request $request)
     {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_SES = DB::table('ansaldo_sellers')->where('ID_SE','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $ID_SES = DB::table('ansaldo_sellers')->get()->toArray();
         $id_user = auth()->user()->id;
         $ID_TG_R=$request->input('ID_TG_R');
         $ID_SE_R=$request->input('ID_SE_R');
@@ -229,14 +237,14 @@ class AnsaldoBuyGhataatController extends Controller
         $value=['id_user'=>$id_user,'query_text'=>$query];
         DB::table('querytexts')->insert($value);
         $requests = DB::select(DB::raw($query));
-        return response()->json(['results'=> $requests,'ID_USERS'=>$data3,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
+        return response()->json(['results'=> $requests,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
     }
     public function report_queryp5($id)
     {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_SES = DB::table('ansaldo_sellers')->where('ID_SE','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $ID_SES = DB::table('ansaldo_sellers')->get()->toArray();
         $data = DB::table('ansaldo_buy_ghataats')->where('ID_T',$id)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);//,'ID_USERS'=>$ID_USERS
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_SES'=>$ID_SES]);
     }
     public function get_history($id)
     {
