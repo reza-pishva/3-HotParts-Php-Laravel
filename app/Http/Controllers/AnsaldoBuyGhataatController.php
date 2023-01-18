@@ -1,8 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-
-
 use App\Ansaldo_bazsaz;
 use App\Ansaldo_buy_ghataat;
 use App\Ansaldo_savabegh;
@@ -149,7 +147,7 @@ class AnsaldoBuyGhataatController extends Controller
     }
      /**
      * In this method we remove a row from ansaldo_buy_ghataats.but we should note that the id 
-     * that we want to remove from this table should not be used in ansaldo_savabeghs table as forign key.
+     * which we want to remove from this table should not be used in ansaldo_savabeghs table as forign key.
      * then we send the id to our view and set perm(permission) one for removing.
      * otherwise we  set perm(permission) zero to the view to show appropriate alert to the user.
      */   
@@ -162,6 +160,11 @@ class AnsaldoBuyGhataatController extends Controller
             return response()->json(['success'=>'true','perm'=>0]);
         }
     }
+    
+    
+     /**
+     * In this method we are going to edit the fields of ansaldo_buy_ghataats table with specific id
+     */
     public function edit(Request $request)
     {
         $ID_T_EDIT=$request->input('ID_T_EDIT');
@@ -169,7 +172,6 @@ class AnsaldoBuyGhataatController extends Controller
         $DISCRIPTION_EDIT=$request->input('DISCRIPTION_EDIT');
         $GROUP_COUNT_EDIT=$request->input('GROUP_COUNT_EDIT');
         $ID_SE_EDIT=$request->input('ID_SE_EDIT');
-//        $BUY_CONDITION_EDIT=$request->input('BUY_CONDITION_EDIT');
         $SHOMAREH_GHARAR=$request->input('SHOMAREH_GHARAR_EDIT');
         $RESV_EDIT=$request->input('RESV_EDIT');
         $DATE_SHAMSI_EDIT=$request->input('DATE_SHAMSI_EDIT');
@@ -182,11 +184,13 @@ class AnsaldoBuyGhataatController extends Controller
             'DISCRIPTION'=>$DISCRIPTION_EDIT,
             'RESV'=>$RESV_EDIT,
             'ID_SE'=>$ID_SE_EDIT,
-//            'BUY_CONDITION'=>0,
             'SHOMAREH_GHARAR'=>$SHOMAREH_GHARAR,
             'DATE_SHAMSI'=>$DATE_SHAMSI_EDIT]);
         return response()->json(['success'=>'the information has successfuly saved','ID_T'=>$ID_T_EDIT]);
     }
+     /**
+     * In this method we are going to convert latin numbers into persian numbers.
+     */
     public function convert($string) {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $num = range(0, 9);
