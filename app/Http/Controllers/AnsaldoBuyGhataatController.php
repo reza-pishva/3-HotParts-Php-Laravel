@@ -25,9 +25,13 @@ use Illuminate\Support\Facades\DB;
 
 class AnsaldoBuyGhataatController extends Controller
 {
+    
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * In this method we store the buy request from different companies which sell power plant equipment.
+     * first we get the id of current user to specify the requester of this buy request.
+     * then we create an instance of the model Ansaldo_buy_ghataat.it is linked to the ansaldo_buy_ghataats table.
+     * then we get the information such as some foriegn key from the form created for providing new buy request.
+     * then we save them into 'Ansaldo_buy_ghataat' 
      */
     public  function store(Request $request){
         $id_user=auth()->user()->id;
@@ -43,51 +47,36 @@ class AnsaldoBuyGhataatController extends Controller
         $atp->DATE_SHAMSI=$this->convert($DATE_BEGIN1_array[0].$DATE_BEGIN1_array[1].$DATE_BEGIN1_array[2]);
         $atp->ID_USER=$id_user;
         $atp->save();
-        return response()->json(['message'=> 'hi']);
+        return response()->json(['message'=> 'this request successfully was saved']);
     }
     public function create()
     {
-                                                        //--access level-----
-                                                        $user = auth()->user()->id;
-                                                        $f_name=auth()->user()->f_name;
-                                                        $l_name=auth()->user()->l_name;
-                                                        $full_name=$f_name.' '.$l_name;
-                                                        $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
-                                                        $allow=0;
-                                                        foreach ($groupusers as $groupuser) {
-                                                            $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
-                                                            foreach ($grouproles as $grouprole) {
-                                                
-                                                                $role_name=Role::where('id_role',$grouprole['id_role'])->first();
-                                                                if($role_name['role'] ==="admin" or $role_name['role'] ==="track_create_program"){
-                                                                    $allow=1;
-                                                                    $g_y = Carbon::now()->year;
-                                                                    $g_m = Carbon::now()->month;
-                                                                    $g_d = Carbon::now()->day;
-                                                                    $Calendar=new CalendarHelper();
-                                                                    $date_shamsi_array=$Calendar->gregorian_to_jalali($g_y, $g_m, $g_d);
-                                                                    $date_shamsi=$date_shamsi_array[0].'/'.$date_shamsi_array[1].'/'.$date_shamsi_array[2];
-                                                                    $mytime=Carbon::now();
-                                                                    $part = auth()->user()->id_request_part;
-                                                                    $ghataats =Ansaldo_type_ghataat::all();
-                                                                    $ats=Ansaldo_bazsaz::all();
-                                                                    $sellers=Ansaldo_seller::all();
-                                                                    return view('Ansaldo.ansaldo_buy_program',compact('ghataats','ats','sellers'));
-                                                                }
-                                                
-                                                            }
-                                                        }
-                                                
-                                                        if($allow===0){
-                                                            return view('access_denied');
-                                                        }
-                                                        //--access level-----
-
+        $user = auth()->user()->id;
+        $f_name=auth()->user()->f_name;
+        $l_name=auth()->user()->l_name;
+        $full_name=$f_name.' '.$l_name;
+        $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
+        $allow=0;
+        foreach ($groupusers as $groupuser) {
+            $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
+            foreach ($grouproles as $grouprole) {
+                $role_name=Role::where('id_role',$grouprole['id_role'])->first();
+                if($role_name['role'] ==="admin" or $role_name['role'] ==="track_create_program"){
+                   $allow=1;
+                   $ghataats =Ansaldo_type_ghataat::all();
+                   $ats=Ansaldo_bazsaz::all();
+                   $sellers=Ansaldo_seller::all();
+                   return view('Ansaldo.ansaldo_buy_program',compact('ghataats','ats','sellers'));
+                 }
+              }
+          }
+         if($allow===0){
+            return view('access_denied');
+          }
     }
     public function total()
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-//        $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
         $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_out_ghataats')->where('ID_T','>',0)->orderBy('ID_T', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
