@@ -84,13 +84,27 @@ class AnsaldoBuyGhataatController extends Controller
             return view('access_denied');
           }
     }
+    
+    
+    
+    /**
+     * In this method we get the total rows from ansaldo_out_ghataats table. this table is used to store the cases that we send outside of company 
+     * for reconstruction. 
+     * in addition to this information we get the ids of the type of equipment .
+     * after that we send these two data to our view.
+     */ 
     public function total()
     {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_out_ghataats')->where('ID_T','>',0)->orderBy('ID_T', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $data = DB::table('ansaldo_out_ghataats')->orderBy('ID_T', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
+    
+    
+    
+    
+    
+    
     public function total_today()
     {
         $id_user = auth()->user()->id;
