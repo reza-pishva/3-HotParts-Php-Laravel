@@ -12,8 +12,6 @@ use App\Querytext;
 use App\User;
 use App\CalendarHelper;
 use Carbon\Carbon;
-use App\Form;
-use App\Goodstype;
 use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
@@ -104,7 +102,12 @@ class AnsaldoBuyGhataatController extends Controller
     
     
     
-    
+  /**
+     * In this method we are going to get the rows that current user has created during the day he has worked with this software.
+     * so we get the day,month,year of the day. 
+     * then we get the rows created by current user in that date in ansaldo_out_ghataats table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
+     */    
     public function total_today()
     {
         $id_user = auth()->user()->id;
@@ -120,11 +123,9 @@ class AnsaldoBuyGhataatController extends Controller
             $date_shamsi_array[2]='0'.$date_shamsi_array[2];
         }
         $current_date_shamsi=$date_shamsi_array[0].$date_shamsi_array[1].$date_shamsi_array[2];
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-//        $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_out_ghataats')->where('ID_T','>',0)->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_T', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $data = DB::table('ansaldo_out_ghataats')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_T', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'current_date_shamsi'=>$g_d]);
     }
     public function onlyone()
     {
