@@ -1,8 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-
-
 use App\Ansaldo_group_name;
 use App\Ansaldo_type_ghataat;
 use App\Querytext;
@@ -93,6 +91,12 @@ class AnsaldoGroupChangeController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_TG',$id)->orderBy('ID_G', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
+     /**
+     * In this method we get the total rows from ansaldo_type_ghataats table that contains specific the rows created by current user 
+     * and at the date the user has loged in from 'ansaldo_type_ghataats' table.
+     * in addition to this information we get the ids of the type of equipment .
+     * after that we send these two data to our view.
+     */ 
     public function total_today()
     {
         $id_user = auth()->user()->id;
@@ -108,10 +112,9 @@ class AnsaldoGroupChangeController extends Controller
             $date_shamsi_array[2]='0'.$date_shamsi_array[2];
         }
         $current_date_shamsi=$date_shamsi_array[0].$date_shamsi_array[1].$date_shamsi_array[2];
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_group_names')->where('ID_G','>',0)->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $data = DB::table('ansaldo_group_names')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'current_date_shamsi'=>$g_d]);
     }
     public function onlyone()
     {
