@@ -49,6 +49,11 @@ class AnsaldoGhataatsController extends Controller
         $data = DB::table('ansaldo_ghataats')->orderBy('ID_E', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
+    /**
+     * each user creates his/her own group and then insert many equpment info into this group.
+     * in this method we want to get the name of groups created by our current user in the date that user has loged in.
+     * along with this data we need to have types of all equipment and the id of our cuurent user in the view.     
+    */
     public function total_today()
     {
         $id_user = auth()->user()->id;
@@ -64,10 +69,9 @@ class AnsaldoGhataatsController extends Controller
             $date_shamsi_array[2]='0'.$date_shamsi_array[2];
         }
         $current_date_shamsi=$date_shamsi_array[0].$date_shamsi_array[1].$date_shamsi_array[2];
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_group_names')->where('ID_G','>',0)->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $data = DB::table('ansaldo_group_names')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);
     }
     public function onlyone()
     {
