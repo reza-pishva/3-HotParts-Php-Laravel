@@ -32,10 +32,8 @@ class AnsaldoNirNaController extends Controller
         return response()->json(['success'=>'hi','id_nn'=>$id_nn]);
     }
     /**
-     * In this method we get the total rows from ansaldo_out_ghataats table. this table is used to store the cases that we send outside of company 
-     * for reconstruction. 
-     * in addition to this information we get the ids of the type of equipment .
-     * after that we send these two data to our view.
+     * In this method we get the total rows from ansaldo_nirogah_names table. 
+     * then we send these two data to our view.
      */ 
     public function total()
     {
@@ -43,10 +41,7 @@ class AnsaldoNirNaController extends Controller
         return response()->json(['results'=> $data]);
     }
     /**
-     * In this method we remove a row from ansaldo_buy_ghataats.but we should note that the id 
-     * which we want to remove from this table should not be used in ansaldo_savabeghs table as forign key.
-     * then we send the id to our view and set perm(permission) one for removing.
-     * otherwise we  set perm(permission) zero to the view to show appropriate alert to the user.
+     * In this method we remove a row from 'ansaldo_nirogah_names' with specific id.
      */  
     public function delete($id){
         $id_user=auth()->user()->id;
@@ -55,7 +50,7 @@ class AnsaldoNirNaController extends Controller
         return response()->json(['success'=>'hi','id_nn'=>$id_nn]);
     }
     /**
-     * In this method we are going to edit the fields of ansaldo_buy_ghataats table with specific id
+     * In this method we are going to edit the fields of 'ansaldo_nirogah_names' table with specific id
      */
     public function edit(Request $request)
     {
