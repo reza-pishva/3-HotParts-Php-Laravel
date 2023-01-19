@@ -93,9 +93,9 @@ class AnsaldoBazsazController extends Controller
         $n= DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_BA',$id)->get()->count();
         if($n==0){
             Ansaldo_bazsaz::where('ID_BA', $id)->delete();
-            return response()->json(['success'=>'hi','n'=>$n]);
+            return response()->json(['success'=>'this record was removed','n'=>$n]);
         }else{
-            return response()->json(['success'=>'hi','n'=>$n]);
+            return response()->json(['success'=>'you can not remove this record','n'=>$n]);
         }
     }
     
