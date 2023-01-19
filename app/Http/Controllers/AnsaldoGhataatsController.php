@@ -96,6 +96,11 @@ class AnsaldoGhataatsController extends Controller
             return response()->json(['success'=>'you can not remove it','n'=>0]);
         }
     }
+   /**
+     * in this method we are going to edit a row from "ansaldo_ghataats" table.
+     * before updating the row ,we check if there is any row with the same serial number exists in that table.  
+     * if there was,user can not edit that row.  
+    */
     public function edit(Request $request)
     {
         $ID_E_EDIT=$request->input('ID_E_EDIT2');
@@ -106,7 +111,7 @@ class AnsaldoGhataatsController extends Controller
         $REAL_SOURE_EDIT=$request->input('REAL_SOURE_EDIT');
         $n= Ansaldo_ghataat::where('SERIYAL_NUMBER',$SERIYAL_NUMBER_EDIT)->where('ID_E','!=',$ID_E_EDIT)->get()->count();
         if($n>=1){
-            return response()->json(['message'=> 'hi','repeat'=>1]);
+            return response()->json(['message'=> 'you can not change it','repeat'=>1]);
         }
         Ansaldo_ghataat::where('ID_E', $ID_E_EDIT)->update([
             'SERIYAL_NUMBER'=>$SERIYAL_NUMBER_EDIT,
@@ -114,30 +119,6 @@ class AnsaldoGhataatsController extends Controller
             'MAKER'=>$MAKER_EDIT,
             'REAL_SOURE'=>$REAL_SOURE_EDIT]);
         return response()->json(['success'=>'the information has successfuly saved','ID_G'=>$ID_G_EDIT,'repeat'=>0]);
-    }
-    public function edit2(Request $request)
-    {
-        $ID_G_EDIT=$request->input('ID_G_EDIT');
-        if($request->input('MAKER_EDIT')!=0 and $request->input('REAL_SOURE_EDIT')!=0){
-            $MAKER_EDIT=$request->input('MAKER_EDIT');
-            $REAL_SOURE_EDIT=$request->input('REAL_SOURE_EDIT');
-            Ansaldo_ghataat::where('ID_G', $ID_G_EDIT)->update([
-                'MAKER'=>$MAKER_EDIT,
-                'REAL_SOURE'=>$REAL_SOURE_EDIT]);
-        }
-        if($request->input('MAKER_EDIT')!=0 and $request->input('REAL_SOURE_EDIT')==0){
-            $MAKER_EDIT=$request->input('MAKER_EDIT');
-            Ansaldo_ghataat::where('ID_G', $ID_G_EDIT)->update([
-                'MAKER'=>$MAKER_EDIT]);
-        }
-        if($request->input('MAKER_EDIT')==0 and $request->input('REAL_SOURE_EDIT')!=0){
-            $REAL_SOURE_EDIT=$request->input('REAL_SOURE_EDIT');
-            Ansaldo_ghataat::where('ID_G', $ID_G_EDIT)->update([
-                'REAL_SOURE'=>$REAL_SOURE_EDIT]);
-        }
-
-
-        return response()->json(['success'=>'the information has successfuly saved','ID_G'=>$ID_G_EDIT]);
     }
     public function convert($string) {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
