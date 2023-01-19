@@ -11,8 +11,6 @@ use App\Querytext;
 use App\User;
 use App\CalendarHelper;
 use Carbon\Carbon;
-use App\Form;
-use App\Goodstype;
 use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
@@ -41,12 +39,15 @@ class AnsaldoGhataatsController extends Controller
         $atp->save();
         return response()->json(['message'=> 'this information was successfully saved','ID_G'=>$request->input('ID_G')]);
     }
+    /**
+     * In this method we we will get the whole rows from "ansaldo_ghataats" table.
+     * along with sending this data we need to send all types of equipment through json file to our view.
+    */
     public function total()
     {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_ghataats')->where('ID_E','>',0)->orderBy('ID_E', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $data = DB::table('ansaldo_ghataats')->orderBy('ID_E', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     public function total_today()
     {
