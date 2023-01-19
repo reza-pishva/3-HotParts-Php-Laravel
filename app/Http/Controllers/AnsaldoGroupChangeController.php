@@ -124,24 +124,35 @@ class AnsaldoGroupChangeController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_G',$ID_G)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
+    /**
+     * In this method we are going to get the rows from ansaldo_group_names table that current user has created.
+     * then we get the last row created by current user in ansaldo_group_names table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
+     */    
     public function onlyone2($id)
     {
         $id_user = auth()->user()->id;
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
+        $data3 = DB::table('users')->get()->toArray();
         $data = DB::table('ansaldo_group_names')->where('ID_G',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
     }
+    /**
+     * In this method we remove a row from ansaldo_group_names.but we should note that the id 
+     * which we want to remove from this table should not be used in ansaldo_ghataats table as forign key.
+     */ 
     public function delete($id){
-//        Ansaldo_group_name::where('ID_G', $id)->delete();
         $rec_no = DB::table('ansaldo_ghataats')->where('ID_G',$id)->get()->count();
         if($rec_no>0){
-            return response()->json(['success'=>'hi','rec_no'=>1]);
+            return response()->json(['success'=>'this record was removed successfully','rec_no'=>1]);
         }else{
             Ansaldo_group_name::where('ID_G', $id)->delete();
-            return response()->json(['success'=>'hi','rec_no'=>0]);
+            return response()->json(['success'=>'you can not delete this record','rec_no'=>0]);
         }
     }
+    /**
+     * In this method we are going to edit the fields of ansaldo_group_names table with specific id
+     */
     public function edit(Request $request)
     {
         $ID_G_EDIT=$request->input('ID_G_EDIT');
