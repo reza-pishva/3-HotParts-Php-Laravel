@@ -9,8 +9,6 @@ use App\Querytext;
 use App\User;
 use App\CalendarHelper;
 use Carbon\Carbon;
-use App\Form;
-use App\Goodstype;
 use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
@@ -22,9 +20,12 @@ use Illuminate\Support\Facades\DB;
 
 class AnsaldoGroupNamesController extends Controller
 {
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+   /**
+     * In this method we store the buy request from different companies which sell power plant equipment.
+     * first we get the id of current user to specify the requester of this buy request.
+     * then we create an instance of the model Ansaldo_buy_ghataat.it is linked to the ansaldo_buy_ghataats table.
+     * then we get the information such as some foriegn key from the form created for providing new buy request.
+     * then we save them into 'Ansaldo_buy_ghataat' 
      */
     public  function store(Request $request){
         $id_user=auth()->user()->id;
@@ -42,45 +43,45 @@ class AnsaldoGroupNamesController extends Controller
         }
         return response()->json(['message'=> 'hi']);
     }
+    /**
+     * In this method we authorize the person who wants to open the form which we can initialize buy request information in this software
+     * first we get the id , first name and last name of current user.then we retrieve the groups that our user belongs to.
+     * then we get the roles of this user from different groups which this user belongs to after first foreach.
+     * in the second foreach we get the name of roles of this user that has and if it was admin or track_create_program 
+     * we return the view of ansaldo_buy_program and at the same time we pass the name of equipment and sellers and reconstructurerer companies to this view
+     * if this user did not have acceptable roles to open this view we will return access_denied instead.
+     */ 
     public function create()
     {
-                //--access level-----
-                $user = auth()->user()->id;
-                $f_name=auth()->user()->f_name;
-                $l_name=auth()->user()->l_name;
-                $full_name=$f_name.' '.$l_name;
-                $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
-                $allow=0;
-                foreach ($groupusers as $groupuser) {
-                    $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
-                    foreach ($grouproles as $grouprole) {
-        
-                        $role_name=Role::where('id_role',$grouprole['id_role'])->first();
-                        if($role_name['role'] ==="admin" or $role_name['role'] ==="track_group_ghataat_insert"){
-                            $allow=1;
-                            $g_y = Carbon::now()->year;
-                            $g_m = Carbon::now()->month;
-                            $g_d = Carbon::now()->day;
-                            $Calendar=new CalendarHelper();
-                            $date_shamsi_array=$Calendar->gregorian_to_jalali($g_y, $g_m, $g_d);
-                            $date_shamsi=$date_shamsi_array[0].'/'.$date_shamsi_array[1].'/'.$date_shamsi_array[2];
-                            $mytime=Carbon::now();
-                            $part = auth()->user()->id_request_part;
-                            $sazs = DB::table('ansaldo_sazandehs')->where('ID_S','>',0)->get()->toArray();
-                            $requests = DB::table('ansaldo_group_names')->where('ID_G','>',0)->orderBy('ID_G', 'DESC')->get()->toArray();
-                            $ghataats =Ansaldo_type_ghataat::all();
-                            return view('Ansaldo.ansaldo_group_name',compact('requests','ghataats','sazs'));
-                        }
-        
-                    }
-                }
-        
-                if($allow===0){
-                    return view('access_denied');
-                }
-                //--access level-----
-
+         $user = auth()->user()->id;
+         $f_name=auth()->user()->f_name;
+         $l_name=auth()->user()->l_name;
+         $full_name=$f_name.' '.$l_name;
+         $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
+         $allow=0;
+         foreach ($groupusers as $groupuser) {
+             $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
+             foreach ($grouproles as $grouprole) {
+                 $role_name=Role::where('id_role',$grouprole['id_role'])->first();
+                 if($role_name['role'] ==="admin" or $role_name['role'] ==="track_group_ghataat_insert"){
+                      $allow=1;
+                      $sazs = DB::table('ansaldo_sazandehs')->where('ID_S','>',0)->get()->toArray();
+                      $requests = DB::table('ansaldo_group_names')->where('ID_G','>',0)->orderBy('ID_G', 'DESC')->get()->toArray();
+                      $ghataats =Ansaldo_type_ghataat::all();
+                      return view('Ansaldo.ansaldo_group_name',compact('requests','ghataats','sazs'));
+                  }
+              }
+          }
+          if($allow===0){
+             return view('access_denied');
+          }
     }
+    /**
+     * In this method we get the total rows from ansaldo_out_ghataats table. this table is used to store the cases that we send outside of company 
+     * for reconstruction. 
+     * in addition to this information we get the ids of the type of equipment .
+     * after that we send these two data to our view.
+     */ 
     public function total()
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
@@ -88,6 +89,13 @@ class AnsaldoGroupNamesController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_G','>',0)->orderBy('ID_G', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
     }
+    
+    /**
+     * In this method we are going to get the rows that current user has created during the day he has worked with this software.
+     * so we get the day,month,year of the day. 
+     * then we get the rows created by current user in that date in ansaldo_out_ghataats table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
+     */ 
     public function total_today()
     {
         $id_user = auth()->user()->id;
@@ -108,6 +116,11 @@ class AnsaldoGroupNamesController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_G','>',0)->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
     }
+    /**
+     * In this method we are going to get the rows from ansaldo_buy_ghataats table that current user has created.
+     * then we get the last row created by current user in ansaldo_buy_ghataats table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table and equpment sellers from ansaldo_sellers to our view.
+     */    
     public function onlyone()
     {
         $id_user = auth()->user()->id;
@@ -117,6 +130,11 @@ class AnsaldoGroupNamesController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_G',$ID_G)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);
     }
+    
+    /**
+     * In this method we are going to get the rows from ansaldo_buy_ghataats with specific id from ansaldo_tamirat_programs table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table and equpment sellers from ansaldo_sellers to our view.
+     */
     public function onlyone2($id)
     {
         $id_user = auth()->user()->id;
@@ -125,8 +143,13 @@ class AnsaldoGroupNamesController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_G',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
     }
+    /**
+     * In this method we remove a row from ansaldo_buy_ghataats.but we should note that the id 
+     * which we want to remove from this table should not be used in ansaldo_savabeghs table as forign key.
+     * then we send the id to our view and set perm(permission) one for removing.
+     * otherwise we  set perm(permission) zero to the view to show appropriate alert to the user.
+     */   
     public function delete($id){
-//        Ansaldo_group_name::where('ID_G', $id)->delete();
         $rec_no = DB::table('ansaldo_ghataats')->where('ID_G',$id)->get()->count();
         if($rec_no>0){
             return response()->json(['success'=>'hi','rec_no'=>1]);
@@ -135,6 +158,9 @@ class AnsaldoGroupNamesController extends Controller
             return response()->json(['success'=>'hi','rec_no'=>0]);
         }
     }
+    /**
+     * In this method we are going to edit the fields of ansaldo_buy_ghataats table with specific id
+     */
     public function edit(Request $request)
     {
         $ID_G_EDIT=$request->input('ID_G_EDIT');
@@ -147,26 +173,30 @@ class AnsaldoGroupNamesController extends Controller
             'GROUP_TYPE'=>$GROUP_TYPE_EDIT]);
         return response()->json(['success'=>'the information has successfuly saved','ID_G'=>$ID_G_EDIT]);
     }
+    /**
+     * In this method we are going to convert latin numbers into persian numbers.
+     */
     public function convert($string) {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $num = range(0, 9);
         $englishNumbersOnly = str_replace($persian, $num, $string);
         return $englishNumbersOnly;
     }
+    /**
+     * In this method we are going to create a report from ansaldo_buy_ghataats table.
+     * first we get some information from base tables which we want to use them in where part of our select command.
+     * then we will get some data from our search form to be used in where part of our select command as well.
+     * for the field that we do not want to set anything in our where part we will use '>0' for their id to cover all possible values.
+     * in the end we stick all these part together to create a raw query.
+     * after that we will save this query string and the id of the user who creates this report in the querytext table.
+     * then we will use DB::select command to use this raw query and send it to our view as json file.
+     */
     public function report_queryp(Request $request)
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
         $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $users = DB::table('users')->where('id','>',0)->get()->toArray();
         $id_user = auth()->user()->id;
-//        $date_exit_shamsi1=$request->input('DATE_BEGINR');
-//        $date_shamsi_array1 = explode('/',$date_exit_shamsi1);
-//        $date_exit_shamsi2=$request->input('DATE_ENDR');
-//        $date_shamsi_array2 = explode('/',$date_exit_shamsi2);
-//        $date_exit_shamsi1=$date_shamsi_array1[0].$date_shamsi_array1[1].$date_shamsi_array1[2];
-//        $date_exit_shamsi2=$date_shamsi_array2[0].$date_shamsi_array2[1].$date_shamsi_array2[2];
-//        $date_exit_shamsi1=$this->convert($date_exit_shamsi1);
-//        $date_exit_shamsi2=$this->convert($date_exit_shamsi2);
 
         $ID_TG_R=$request->input('ID_TG_R');
         $GROUP_TYPE_R=$request->input('GROUP_TYPE_R');
@@ -190,16 +220,6 @@ class AnsaldoGroupNamesController extends Controller
         $requests = DB::select(DB::raw($query));
         return response()->json(['results'=> $requests,'ID_TGS'=>$ID_TGS,'ID_USER'=>$id_user,'ID_USERS'=>$data3,'QUERY'=>$query]);
     }
-//    public function report_queryp2()
-//    {
-//        $ID_UNS = DB::table('ansaldo_unit_numbers')->where('ID_UN','>',0)->get()->toArray();
-//        $ID_TTS = DB::table('ansaldo_tamirat_types')->where('ID_TT','>',0)->get()->toArray();
-//        $ID_TAS = DB::table('ansaldo_tamirkarans')->where('ID_TA','>',0)->get()->toArray();
-//        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-//        $id_user = auth()->user()->id;
-//        $query = DB::table('querytexts')->where('ID_USER',$id_user)->orderBy('id_qu', 'DESC')->first()->query_text;
-//        $requests = DB::select(DB::raw($query));
-//        return response()->json(['results'=> $requests,'ID_UNS'=>$ID_UNS,'ID_TAS'=>$ID_TAS,'ID_TTS'=>$ID_TTS,'ID_USERS'=>$data3,'ID_USER'=>$id_user,'QUERY'=>$query]);
-//    }
+
 
 }
