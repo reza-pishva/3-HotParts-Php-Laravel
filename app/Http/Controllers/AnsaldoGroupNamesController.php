@@ -44,11 +44,11 @@ class AnsaldoGroupNamesController extends Controller
         return response()->json(['message'=> 'hi']);
     }
     /**
-     * In this method we authorize the person who wants to open the form which we can initialize buy request information in this software
+     * In this method we authorize the person who wants to open the form which we can initialize equipment group information in this software
      * first we get the id , first name and last name of current user.then we retrieve the groups that our user belongs to.
      * then we get the roles of this user from different groups which this user belongs to after first foreach.
-     * in the second foreach we get the name of roles of this user that has and if it was admin or track_create_program 
-     * we return the view of ansaldo_buy_program and at the same time we pass the name of equipment and sellers and reconstructurerer companies to this view
+     * in the second foreach we get the name of roles of this user that has and if it was admin or 'track_group_ghataat_insert' 
+     * we return the view of ansaldo_group_name and at the same time we pass the type of equipment to this view
      * if this user did not have acceptable roles to open this view we will return access_denied instead.
      */ 
     public function create()
