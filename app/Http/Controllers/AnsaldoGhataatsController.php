@@ -73,6 +73,11 @@ class AnsaldoGhataatsController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);
     }
+     /**
+     * each user creates his/her own group and then insert many equpment info into this group.
+     * in this method we want to get the name of groups created by our current user in the date that user has loged in.
+     * along with this data we need to have types of all equipment and the id of our cuurent user in the view.     
+    */
     public function onlyone()
     {
         $id_user = auth()->user()->id;
