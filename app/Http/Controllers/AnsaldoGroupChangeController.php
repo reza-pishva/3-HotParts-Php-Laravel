@@ -40,32 +40,27 @@ class AnsaldoGroupChangeController extends Controller
      */ 
     public function create()
     {
-                //--access level-----
-                $user = auth()->user()->id;
-                $f_name=auth()->user()->f_name;
-                $l_name=auth()->user()->l_name;
-                $full_name=$f_name.' '.$l_name;
-                $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
-                $allow=0;
-                foreach ($groupusers as $groupuser) {
-                    $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
-                    foreach ($grouproles as $grouprole) {
-        
-                        $role_name=Role::where('id_role',$grouprole['id_role'])->first();
-                        if($role_name['role'] ==="admin" or $role_name['role'] ==="track_group_ghataat_change"){
-                            $requests = Ansaldo_group_name::all();
-                            $ghataats =Ansaldo_type_ghataat::all();
-                            $sazs = DB::table('ansaldo_sazandehs')->get()->toArray();
-                            return view('Ansaldo.ansaldo_group_change',compact('requests','ghataats','sazs'));
-                        }
-        
-                    }
-                }
-        
-                if($allow===0){
-                    return view('access_denied');
-                }
-                //--access level-----
+         $user = auth()->user()->id;
+         $f_name=auth()->user()->f_name;
+         $l_name=auth()->user()->l_name;
+         $full_name=$f_name.' '.$l_name;
+         $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
+         $allow=0;
+         foreach ($groupusers as $groupuser) {
+              $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
+              foreach ($grouproles as $grouprole) {
+                  $role_name=Role::where('id_role',$grouprole['id_role'])->first();
+                  if($role_name['role'] ==="admin" or $role_name['role'] ==="track_group_ghataat_change"){
+                     $requests = Ansaldo_group_name::all();
+                     $ghataats =Ansaldo_type_ghataat::all();
+                     $sazs = DB::table('ansaldo_sazandehs')->get()->toArray();
+                     return view('Ansaldo.ansaldo_group_change',compact('requests','ghataats','sazs'));
+                  }
+               }
+         }  
+         if($allow===0){
+            return view('access_denied');
+         }
        
     }
    /**
@@ -116,14 +111,18 @@ class AnsaldoGroupChangeController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'current_date_shamsi'=>$g_d]);
     }
+     /**
+     * In this method we are going to get the rows from ansaldo_group_names table that current user has created.
+     * then we get the last row created by current user in ansaldo_group_names table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
+     */    
     public function onlyone()
     {
         $id_user = auth()->user()->id;
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
         $ID_G= Ansaldo_group_name::where('id_user',$id_user)->orderBy('ID_G', 'desc')->first()->ID_G;
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_group_names')->where('ID_G',$ID_G)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     public function onlyone2($id)
     {
