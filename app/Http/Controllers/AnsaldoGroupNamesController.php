@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoGroupNamesController extends Controller
 {
    /**
-     * In this method we store the buy request from different companies which sell power plant equipment.
-     * first we get the id of current user to specify the requester of this buy request.
-     * then we create an instance of the model Ansaldo_buy_ghataat.it is linked to the ansaldo_buy_ghataats table.
-     * then we get the information such as some foriegn key from the form created for providing new buy request.
-     * then we save them into 'Ansaldo_buy_ghataat' 
+     * In this method we store the name of equipment group in ansaldo_group_names table.
+     * first we get the id of current user.
+     * then we create an instance of the model Ansaldo_group_name.it is linked to the ansaldo_group_names table.
+     * then we get the information such as some foriegn key from the form created for providing new group name.
+     * then we save them into 'ansaldo_group_names' 
      */
     public  function store(Request $request){
         $id_user=auth()->user()->id;
