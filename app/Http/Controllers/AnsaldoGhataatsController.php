@@ -52,7 +52,7 @@ class AnsaldoGhataatsController extends Controller
     /**
      * each user creates his/her own group and then insert many equpment info into this group.
      * in this method we want to get the name of groups created by our current user in the date that user has loged in.
-     * along with this data we need to have types of all equipment and the id of our cuurent user in the view.     
+     * along with this data we need to have types of all equipment and the id of our current user in the view.     
     */
     public function total_today()
     {
@@ -74,13 +74,11 @@ class AnsaldoGhataatsController extends Controller
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);
     }
      /**
-     * each user creates his/her own group and then insert many equpment info into this group.
-     * in this method we want to get the name of groups created by our current user in the date that user has loged in.
-     * along with this data we need to have types of all equipment and the id of our cuurent user in the view.     
+     * in this method we want to get the name of a group with specific id.
+     * along with this row we need to have types of all equipment in the view.     
     */
     public function onlyone2($id)
     {
-        $id_user = auth()->user()->id;
         $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
         $data = DB::table('ansaldo_group_names')->where('ID_G',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
