@@ -9,8 +9,6 @@ use App\Querytext;
 use App\User;
 use App\CalendarHelper;
 use Carbon\Carbon;
-use App\Form;
-use App\Goodstype;
 use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
@@ -23,8 +21,8 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoGroupChangeController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * in this method we are going to save info from its form into 'ansaldo_group_names' table.
+     * in addition,we get the id of current user,another values were gotten with $request argument.
      */
     public  function store(Request $request){
         $id_user=auth()->user()->id;
@@ -34,7 +32,7 @@ class AnsaldoGroupChangeController extends Controller
         $atp->GROUP_TYPE=$request->input('GROUP_TYPE');
         $atp->ID_USER=$id_user;
         $atp->save();
-        return response()->json(['message'=> 'hi']);
+        return response()->json(['message'=> 'this record was saved']);
     }
     public function create()
     {
