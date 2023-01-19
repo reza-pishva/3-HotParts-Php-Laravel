@@ -73,7 +73,7 @@ class AnsaldoGhataatsController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);
     }
-     /**
+    /**
      * in this method we want to get the name of a group with specific id.
      * along with this row we need to have types of all equipment in the view.     
     */
@@ -83,13 +83,17 @@ class AnsaldoGhataatsController extends Controller
         $data = DB::table('ansaldo_group_names')->where('ID_G',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
+   /**
+     * in this method we are going to remove a row from "ansaldo_ghataats" table.
+     * before removing the row ,we will check if there is any row with this id in the history of that equipment.     
+    */
     public function delete($id){
         $n= Ansaldo_savabegh::where('ID_E', $id)->get()->count();
         if($n==0){
             Ansaldo_ghataat::where('ID_E', $id)->delete();
-            return response()->json(['success'=>'hi','n'=>1]);
+            return response()->json(['success'=>'this record was romoved','n'=>1]);
         }else{
-            return response()->json(['success'=>'hi','n'=>0]);
+            return response()->json(['success'=>'you can not remove it','n'=>0]);
         }
     }
     public function edit(Request $request)
