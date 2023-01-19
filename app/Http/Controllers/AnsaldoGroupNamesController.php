@@ -114,7 +114,7 @@ class AnsaldoGroupNamesController extends Controller
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'current_date_shamsi'=>$g_d]);
     }
     /**
-     * In this method we are going to get the rows from ansaldo_group_names table that current user has created.
+     * In this method we get the rows from ansaldo_group_names table that current user has created.
      * then we get the last row created by current user in ansaldo_buy_ghataats table.
      * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
      */    
@@ -139,22 +139,20 @@ class AnsaldoGroupNamesController extends Controller
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     /**
-     * In this method we remove a row from ansaldo_buy_ghataats.but we should note that the id 
-     * which we want to remove from this table should not be used in ansaldo_savabeghs table as forign key.
-     * then we send the id to our view and set perm(permission) one for removing.
-     * otherwise we  set perm(permission) zero to the view to show appropriate alert to the user.
+     * In this method we remove a row from ansaldo_group_names.but we should note that the id 
+     * which we want to remove from this table should not be used in ansaldo_ghataats table as forign key.
      */   
     public function delete($id){
         $rec_no = DB::table('ansaldo_ghataats')->where('ID_G',$id)->get()->count();
         if($rec_no>0){
-            return response()->json(['success'=>'hi','rec_no'=>1]);
+            return response()->json(['success'=>'you can not remove this record','rec_no'=>1]);
         }else{
             Ansaldo_group_name::where('ID_G', $id)->delete();
-            return response()->json(['success'=>'hi','rec_no'=>0]);
+            return response()->json(['success'=>'this record was removed','rec_no'=>0]);
         }
     }
     /**
-     * In this method we are going to edit the fields of ansaldo_buy_ghataats table with specific id
+     * In this method we are going to edit the fields of ansaldo_group_names table with specific id
      */
     public function edit(Request $request)
     {
@@ -178,7 +176,7 @@ class AnsaldoGroupNamesController extends Controller
         return $englishNumbersOnly;
     }
     /**
-     * In this method we are going to create a report from ansaldo_buy_ghataats table.
+     * In this method we are going to create a report from ansaldo_group_names table.
      * first we get some information from base tables which we want to use them in where part of our select command.
      * then we will get some data from our search form to be used in where part of our select command as well.
      * for the field that we do not want to set anything in our where part we will use '>0' for their id to cover all possible values.
