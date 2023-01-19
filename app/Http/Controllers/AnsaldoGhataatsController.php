@@ -120,6 +120,9 @@ class AnsaldoGhataatsController extends Controller
             'REAL_SOURE'=>$REAL_SOURE_EDIT]);
         return response()->json(['success'=>'the information has successfuly saved','ID_G'=>$ID_G_EDIT,'repeat'=>0]);
     }
+    /**
+     * In this method we are going to convert latin numbers into persian numbers.
+    */
     public function convert($string) {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $num = range(0, 9);
