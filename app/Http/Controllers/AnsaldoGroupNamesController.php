@@ -91,7 +91,7 @@ class AnsaldoGroupNamesController extends Controller
     /**
      * In this method we are going to get the rows that current user has created during the day he has worked with this software.
      * so we get the day,month,year of the day. 
-     * then we get the rows created by current user in that date in ansaldo_out_ghataats table.
+     * then we get the rows created by current user in that date in ansaldo_group_names table.
      * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
      */ 
     public function total_today()
@@ -109,37 +109,34 @@ class AnsaldoGroupNamesController extends Controller
             $date_shamsi_array[2]='0'.$date_shamsi_array[2];
         }
         $current_date_shamsi=$date_shamsi_array[0].$date_shamsi_array[1].$date_shamsi_array[2];
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_group_names')->where('ID_G','>',0)->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $data = DB::table('ansaldo_group_names')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_G', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'current_date_shamsi'=>$g_d]);
     }
     /**
-     * In this method we are going to get the rows from ansaldo_buy_ghataats table that current user has created.
+     * In this method we are going to get the rows from ansaldo_group_names table that current user has created.
      * then we get the last row created by current user in ansaldo_buy_ghataats table.
-     * in addition to this data we send type of equipment from ansaldo_type_ghataats table and equpment sellers from ansaldo_sellers to our view.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
      */    
     public function onlyone()
     {
         $id_user = auth()->user()->id;
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
         $ID_G= Ansaldo_group_name::where('id_user',$id_user)->orderBy('ID_G', 'desc')->first()->ID_G;
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_group_names')->where('ID_G',$ID_G)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     
     /**
-     * In this method we are going to get the rows from ansaldo_buy_ghataats with specific id from ansaldo_tamirat_programs table.
-     * in addition to this data we send type of equipment from ansaldo_type_ghataats table and equpment sellers from ansaldo_sellers to our view.
+     * In this method we are going to get the rows from 'ansaldo_group_names' with specific id from 'ansaldo_type_ghataats' table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
      */
     public function onlyone2($id)
     {
         $id_user = auth()->user()->id;
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_group_names')->where('ID_G',$id)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     /**
      * In this method we remove a row from ansaldo_buy_ghataats.but we should note that the id 
