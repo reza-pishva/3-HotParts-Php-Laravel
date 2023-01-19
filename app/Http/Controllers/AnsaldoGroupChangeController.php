@@ -7,8 +7,6 @@ use App\Ansaldo_group_name;
 use App\Ansaldo_type_ghataat;
 use App\Querytext;
 use App\User;
-use App\CalendarHelper;
-use Carbon\Carbon;
 use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
@@ -72,19 +70,28 @@ class AnsaldoGroupChangeController extends Controller
                 //--access level-----
        
     }
+   /**
+     * In this method we get the total rows from ansaldo_type_ghataats table. this table is used to store the types of equipment
+     * in addition to this information we get the ids of the type of equipment .
+     * after that we send these two data to our view.
+     */ 
     public function total()
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_group_names')->where('ID_G','>',0)->orderBy('ID_G', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        $data = DB::table('ansaldo_group_names')->orderBy('ID_G', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
+    /**
+     * In this method we get the total rows from ansaldo_type_ghataats table that contains specific id from 'ansaldo_type_ghataats' table.
+     * this table is used to store the types of equipment.
+     * in addition to this information we get the ids of the type of equipment .
+     * after that we send these two data to our view.
+     */ 
     public function total2($id)
     {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
         $data = DB::table('ansaldo_group_names')->where('ID_TG',$id)->orderBy('ID_G', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     public function total_today()
     {
