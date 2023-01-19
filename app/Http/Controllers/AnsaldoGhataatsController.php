@@ -25,9 +25,12 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoGhataatsController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     * In this method we are going to save infoarmation into "ansaldo_ghataats" table.
+     * this table is used to keep the properties of equipment used in hot parts of power plant.
+     * first we create an instance from the the class of its model.
+     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_ghataats" table
+     * then we send a message and the the id of the group which this part belongs to through a json file to our view.
+    */
     public  function store(Request $request){
         $atp= new Ansaldo_ghataat();
         $atp->ID_G=$request->input('ID_G');
@@ -36,13 +39,7 @@ class AnsaldoGhataatsController extends Controller
         $atp->MAKER=$request->input('MAKER');
         $atp->SERIAL_NUMBER2=$request->input('SERIAL_NUMBER2');
         $atp->save();
-        $n= Ansaldo_ghataat::where('SERIYAL_NUMBER',$request->input('SERIYAL_NUMBER'))->get()->count();
-        if($n>1){
-            $ID_E= Ansaldo_ghataat::where('ID_E','>',0)->orderBy('ID_E', 'desc')->first()->ID_E;
-            Ansaldo_ghataat::where('ID_E', $ID_E)->delete();
-            return response()->json(['message'=> 'hi','repeat'=>1]);
-        }
-        return response()->json(['message'=> 'hi','ID_G'=>$request->input('ID_G'),'repeat'=>0]);
+        return response()->json(['message'=> 'this information was successfully saved','ID_G'=>$request->input('ID_G')]);
     }
     public function total()
     {
