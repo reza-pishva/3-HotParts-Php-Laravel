@@ -34,6 +34,14 @@ class AnsaldoGroupChangeController extends Controller
         $atp->save();
         return response()->json(['message'=> 'this record was saved']);
     }
+     /**
+     * In this method we authorize the person who wants to open the form which we can change the properties of 'ansaldo_group_names' table in this software
+     * first we get the id , first name and last name of current user.then we retrieve the groups that our user belongs to.
+     * then we get the roles of this user from different groups which this user belongs to after first foreach.
+     * in the second foreach we get the name of roles of this user that has and if it was admin or track_group_ghataat_change 
+     * we return the view of ansaldo_group_change and at the same time we pass the type of equipment and sellers and constructors companies to this view
+     * if this user did not have acceptable roles to open this view we will return access_denied instead.
+     */ 
     public function create()
     {
                 //--access level-----
@@ -49,18 +57,9 @@ class AnsaldoGroupChangeController extends Controller
         
                         $role_name=Role::where('id_role',$grouprole['id_role'])->first();
                         if($role_name['role'] ==="admin" or $role_name['role'] ==="track_group_ghataat_change"){
-                            $allow=1;
-                            $g_y = Carbon::now()->year;
-                            $g_m = Carbon::now()->month;
-                            $g_d = Carbon::now()->day;
-                            $Calendar=new CalendarHelper();
-                            $date_shamsi_array=$Calendar->gregorian_to_jalali($g_y, $g_m, $g_d);
-                            $date_shamsi=$date_shamsi_array[0].'/'.$date_shamsi_array[1].'/'.$date_shamsi_array[2];
-                            $mytime=Carbon::now();
-                            $part = auth()->user()->id_request_part;
                             $requests = Ansaldo_group_name::all();
                             $ghataats =Ansaldo_type_ghataat::all();
-                            $sazs = DB::table('ansaldo_sazandehs')->where('ID_S','>',0)->get()->toArray();
+                            $sazs = DB::table('ansaldo_sazandehs')->get()->toArray();
                             return view('Ansaldo.ansaldo_group_change',compact('requests','ghataats','sazs'));
                         }
         
