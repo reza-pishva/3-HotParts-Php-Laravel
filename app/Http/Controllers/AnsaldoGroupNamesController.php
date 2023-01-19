@@ -77,17 +77,15 @@ class AnsaldoGroupNamesController extends Controller
           }
     }
     /**
-     * In this method we get the total rows from ansaldo_out_ghataats table. this table is used to store the cases that we send outside of company 
-     * for reconstruction. 
+     * In this method we get the total rows from ansaldo_group_names table. this table is used to store group names.
      * in addition to this information we get the ids of the type of equipment .
      * after that we send these two data to our view.
      */ 
     public function total()
     {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_group_names')->where('ID_G','>',0)->orderBy('ID_G', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $data = DB::table('ansaldo_group_names')->orderBy('ID_G', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     
     /**
