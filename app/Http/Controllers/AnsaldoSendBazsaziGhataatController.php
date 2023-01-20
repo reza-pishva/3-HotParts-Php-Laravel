@@ -101,7 +101,7 @@ class AnsaldoSendBazsaziGhataatController extends Controller
    /**
      * each user creates his/her own request for sending to the companies where this equipment is going to reconstructure
      * in this method we want to get all such requests created by our current user in the date that user has loged in.
-     * along with this data we need to have types of all equipment and the id of our current user and recobstructor companies in the view.     
+     * along with this data we need to have types of all equipment and the id of our current user and reconstructor companies in the view.     
     */
     public function total_today()
     {
@@ -127,7 +127,7 @@ class AnsaldoSendBazsaziGhataatController extends Controller
     /**
      * In this method we get the rows from ansaldo_send_bazsazi_ghataats table that current user has created.
      * then we get the last row created by current user in ansaldo_send_bazsazi_ghataats table.
-     * in addition to this data we send type of equipment from ansaldo_type_ghataats and and recobstructor companies from ansaldo_bazsazs table to our view.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats and and reconstructor companies from ansaldo_bazsazs table to our view.
      */
     public function onlyone()
     {
@@ -139,15 +139,22 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T',$ID_T)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3]);
     }
+   /**
+     * in this method we want to get a request to send outside of power plant with specific id.
+     * along with this row we need to have types of all equipment and the companies which are registered as reconstructor in the view.     
+    */
     public function onlyone2($id)
     {
         $id_user = auth()->user()->id;
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $ID_BAS = DB::table('ansaldo_bazsazs')->get()->toArray();
         $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T',$id)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);
     }
+   /**
+     * in this method we are going to remove a row from "ansaldo_out_ghataats" table.
+     * before removing the row ,we will check if there is any row with this id in the history of that equipment.     
+    */
     public function delete($id){
         $n= DB::table('ansaldo_savabeghs')->where('SAV_TYPE','B')->where('ID_T',$id)->get()->count();
         $rec_no = DB::table('ansaldo_resv_bazsazi_ghataats')->where('ID_T',$id)->get()->count();
@@ -163,6 +170,9 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         }
 
     }
+    /**
+     * in this method we are going to edit a row from "ansaldo_out_ghataats" table.
+    */
     public function edit(Request $request)
     {
         $ID_T_EDIT=$request->input('ID_T_EDIT');
