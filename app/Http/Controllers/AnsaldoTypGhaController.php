@@ -42,12 +42,12 @@ class AnsaldoTypGhaController extends Controller
     */
     public function typgha_total()
     {
-        $data = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
+        $data = DB::table('ansaldo_type_ghataats')->get()->toArray();
         return response()->json(['results'=> $data]);
     }
    /**
-     * in this method we are going to remove a row from "ansaldo_sellers" table.
-     * before removing the row ,we will check if there is any row with this id in the history of that equipment.     
+     * in this method we are going to remove a row from "ansaldo_type_ghataats" table.
+     * before removing the row ,we will check if there is any row with this id in different 5 request type.     
     */
     public function delete($id){
         $n1= DB::table('ansaldo_group_names')->where('ID_TG',$id)->get()->count();
@@ -64,7 +64,7 @@ class AnsaldoTypGhaController extends Controller
         }
     }
    /**
-     * in this method we are going to edit a row from "ansaldo_sellers" table.
+     * in this method we are going to edit a row from "ansaldo_type_ghataats" table.
     */
     public function edit(Request $request)
     {
@@ -75,8 +75,6 @@ class AnsaldoTypGhaController extends Controller
         $SET_COUNT=$request->input('SET_COUNT_EDIT');
         $COUNTB_REJECT=$request->input('COUNTB_REJECT_EDIT');
         $TIME_REJECT=$request->input('TIME_REJECT_EDIT');
-
-//        dd($id_ba);
         Ansaldo_type_ghataat::where('ID_TG', $id_tg)->update([
             'GHATAAT_NAME'=>$GHATAAT_NAME,
             'TIME_STANDARD'=>$TIME_STANDARD,
