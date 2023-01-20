@@ -33,11 +33,19 @@ class AnsaldoTamirattyController extends Controller
         $id_tt = DB::table('ansaldo_tamirat_types')->where('ID_USER',$id_user)->orderBy('ID_TT', 'DESC')->first()->ID_TT;
         return response()->json(['success'=>'hi','id_tt'=>$id_tt]);//,'id_ba'=>$id_ba
     }
+   /**
+     * In this method we will get the whole rows from "ansaldo_tamirat_types" table.
+     * this data is the list of types of repairments in the power plant.
+    */
     public function tamiratty_total()
     {
         $data = DB::table('ansaldo_tamirat_types')->where('ID_TT','>',0)->get()->toArray();
         return response()->json(['results'=> $data]);
     }
+   /**
+     * in this method we are going to remove a row from "ansaldo_tamirat_types" table.
+     * before removing the row ,we will check if there is any row with this id in the ansaldo_tamirat_programs table.     
+    */
     public function delete($id){
         $n= DB::table('ansaldo_tamirat_programs')->where('ID_TT',$id)->get()->count();
         if($n==0){
@@ -47,13 +55,14 @@ class AnsaldoTamirattyController extends Controller
             return response()->json(['success'=>'hi','n'=>$n]);
         }
     }
+   /**
+     * in this method we are going to edit a row from "ansaldo_tamirat_types" table.
+    */
     public function tamiratty_edit(Request $request)
     {
         $id_tt=$request->input('ID_TT_EDIT');
-        $bazsaz=$request->input('TAMIRAT_TYPE_EDIT');
-//        dd($id_ba);
-        Ansaldo_tamirat_type::where('ID_TT', $id_tt)->update([
-            'TAMIRAT_TYPE'=>$bazsaz]);
+        $type=$request->input('TAMIRAT_TYPE_EDIT');
+        Ansaldo_tamirat_type::where('ID_TT', $id_tt)->update(['TAMIRAT_TYPE'=>$type]);
         return response()->json(['success'=>'the information has successfuly saved']);
     }
 
