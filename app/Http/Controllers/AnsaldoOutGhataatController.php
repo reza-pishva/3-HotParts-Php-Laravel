@@ -25,10 +25,10 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoOutGhataatController extends Controller
 {
     /**
-     * In this method we are going to save infoarmation into "ansaldo_ghataats" table.
-     * this table is used to keep the properties of equipment used in hot parts of power plant.
+     * In this method we are going to save infoarmation into "ansaldo_out_ghataats" table.
+     * this table is used to keep the properties of equipment sent to some places for reconstructure.
      * first we create an instance from the the class of its model.
-     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_ghataats" table
+     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_out_ghataats" table
      * then we send a message and the the id of the group which this part belongs to through a json file to our view.
     */
     public  function store(Request $request){
@@ -43,8 +43,17 @@ class AnsaldoOutGhataatController extends Controller
         $atp->DATE_SHAMSI=$this->convert($DATE_BEGIN1_array[0].$DATE_BEGIN1_array[1].$DATE_BEGIN1_array[2]);
         $atp->ID_USER=$id_user;
         $atp->save();
-        return response()->json(['message'=> 'hi']);
+        return response()->json(['message'=> 'this record was saved']);
     }
+   /**
+     * In this method we authorize the person who wants to open the form which we can initialize equipment which we want to send outside for 
+     * reconstructure in this software.
+     * first we get the id , first name and last name of current user.then we retrieve the groups that our user belongs to.
+     * then we get the roles of this user from different groups which this user belongs to after first foreach.
+     * in the second foreach we get the name of roles of this user that has and if it was admin or 'track_create_program' 
+     * we return the view of ansaldo_out_program and at the same time we pass the type of equipment and reconstructurerer companies to this view
+     * if this user did not have acceptable roles to open this view we will return access_denied instead.
+     */ 
     public function create()
     {
         $user = auth()->user()->id;
@@ -71,15 +80,15 @@ class AnsaldoOutGhataatController extends Controller
         }
     }
     /**
-     * In this method we we will get the whole rows from "ansaldo_ghataats" table.
+     * In this method we we will get the whole rows from "ansaldo_out_ghataats" table.
+     * this data is the list of equipment which we send for reconstructure.
      * along with sending this data we need to send all types of equipment through json file to our view.
     */
     public function total()
     {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
         $data = DB::table('ansaldo_out_ghataats')->where('ID_T','>',0)->orderBy('ID_T', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     /**
      * each user creates his/her own group and then insert many equpment info into this group.
@@ -177,6 +186,15 @@ class AnsaldoOutGhataatController extends Controller
         $englishNumbersOnly = str_replace($persian, $num, $string);
         return $englishNumbersOnly;
     }
+    /**
+     * In this method we are going to create a report from ansaldo_group_names table.
+     * first we get some information from base tables which we want to use them in where part of our select command.
+     * then we will get some data from our search form to be used in where part of our select command as well.
+     * for the field that we do not want to set anything in our where part we will use '>0' for their id to cover all possible values.
+     * in the end we stick all these part together to create a raw query.
+     * after that we will save this query string and the id of the user who creates this report in the querytext table.
+     * then we will use DB::select command to use this raw query and send it to our view as json file.
+     */
     public function report_queryp(Request $request)
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
@@ -184,55 +202,18 @@ class AnsaldoOutGhataatController extends Controller
         $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $users = DB::table('users')->where('id','>',0)->get()->toArray();
         $id_user = auth()->user()->id;
-//        $date_exit_shamsi1=$request->input('DATE_BEGINR');
-//        $date_shamsi_array1 = explode('/',$date_exit_shamsi1);
-//        $date_exit_shamsi2=$request->input('DATE_ENDR');
-//        $date_shamsi_array2 = explode('/',$date_exit_shamsi2);
-//        $date_exit_shamsi1=$date_shamsi_array1[0].$date_shamsi_array1[1].$date_shamsi_array1[2];
-//        $date_exit_shamsi2=$date_shamsi_array2[0].$date_shamsi_array2[1].$date_shamsi_array2[2];
-//        $date_exit_shamsi1=$this->convert($date_exit_shamsi1);
-//        $date_exit_shamsi2=$this->convert($date_exit_shamsi2);
-
         $ID_TG_R=$request->input('ID_TG_R');
-//        $OUT_IN_R=$request->input('OUT_IN_R');
-//        $RESV_R=$request->input('RESV_R');
-//
-//        if($RESV_R==0){
-//            $query3="EXIT_NO>=0";
-//        }
-//        if($RESV_R==1){
-//            $query3="EXIT_NO=0";
-//        }
-//        if($RESV_R==2){
-//            $query3="EXIT_NO != GROUP_COUNT AND EXIT_NO > 0";
-//        }
-//        if($RESV_R==3){
-//            $query3="EXIT_NO = GROUP_COUNT";
-//        }
         if($ID_TG_R==0){
             $query2="ID_TG>0";
         }
         if($ID_TG_R!=0){
             $query2="ID_TG=".$ID_TG_R;
         }
-//        if($OUT_IN_R==0){
-//            $query3="OUT_IN>0";
-//        }
-//        if($OUT_IN_R!=0){
-//            $query3="OUT_IN=".$OUT_IN_R;
-//        }
-
-//        $query4="DATE_SHAMSI>=".$date_exit_shamsi1;
-//        $query5="DATE_SHAMSI<=".$date_exit_shamsi2;
-
-
         Querytext::where('id_user', $id_user)->delete();
         $query="SELECT * FROM ansaldo_out_ghataats WHERE ".$query2." ORDER BY ID_T DESC";
-        // $query="SELECT * FROM mitsubishi_out_ghataats WHERE ID_T>0";
         $value=['id_user'=>$id_user,'query_text'=>$query];
         DB::table('querytexts')->insert($value);
         $requests = DB::select(DB::raw($query));
-        // $forms = DB::table('mitsubishi_tamirat_programs')->where('ID_T','>',0)->get()->toArray();
         return response()->json(['results'=> $requests,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USER'=>$id_user,'ID_USERS'=>$data3,'QUERY'=>$query]);
     }
     public function report_queryp2()
