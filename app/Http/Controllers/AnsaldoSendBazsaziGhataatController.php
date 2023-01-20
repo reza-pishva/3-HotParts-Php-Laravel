@@ -30,9 +30,12 @@ use App\User_role;
 class AnsaldoSendBazsaziGhataatController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     * In this method we are going to save infoarmation into "ansaldo_send_bazsazi_ghataats" table.
+     * this table is used to keep the properties of equipment sent to some places for reconstructure.
+     * first we create an instance from the the class of its model.
+     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_send_bazsazi_ghataats" table
+     * then we send a message and the the id of the group which this part belongs to through a json file to our view.
+    */
     public  function store(Request $request){
         $id_user=auth()->user()->id;
         $atp= new Ansaldo_send_bazsazi_ghataat();
@@ -48,50 +51,50 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         $atp->save();
         return response()->json(['message'=> 'hi']);
     }
+    /**
+     * In this method we authorize the person who wants to open the form which we can initialize equipment which we want to send outside for 
+     * reconstructure in this software.
+     * first we get the id , first name and last name of current user.then we retrieve the groups that our user belongs to.
+     * then we get the roles of this user from different groups which this user belongs to after first foreach.
+     * in the second foreach we get the name of roles of this user that has and if it was admin or 'track_create_program' 
+     * we return the view of ansaldo_send_program and at the same time we pass the type of equipment and reconstructurerer companies to this view
+     * if this user did not have acceptable roles to open this view we will return access_denied instead.
+     */
     public function create()
     {
-                                        //--access level-----
-                                        $user = auth()->user()->id;
-                                        $f_name=auth()->user()->f_name;
-                                        $l_name=auth()->user()->l_name;
-                                        $full_name=$f_name.' '.$l_name;
-                                        $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
-                                        $allow=0;
-                                        foreach ($groupusers as $groupuser) {
-                                            $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
-                                            foreach ($grouproles as $grouprole) {
-                                
-                                                $role_name=Role::where('id_role',$grouprole['id_role'])->first();
-                                                if($role_name['role'] ==="admin" or $role_name['role'] ==="track_create_program"){
-                                                    $allow=1;
-                                                    $g_y = Carbon::now()->year;
-                                                    $g_m = Carbon::now()->month;
-                                                    $g_d = Carbon::now()->day;
-                                                    $Calendar=new CalendarHelper();
-                                                    $date_shamsi_array=$Calendar->gregorian_to_jalali($g_y, $g_m, $g_d);
-                                                    $date_shamsi=$date_shamsi_array[0].'/'.$date_shamsi_array[1].'/'.$date_shamsi_array[2];
-                                                    $mytime=Carbon::now();
-                                                    $part = auth()->user()->id_request_part;
-                                                    $requests = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T','>',0)->orderBy('ID_T', 'DESC')->get()->toArray();
-                                                    $ghataats =Ansaldo_type_ghataat::all();
-                                                    $ats=Ansaldo_bazsaz::all();
-                                                    return view('Ansaldo.ansaldo_send_program',compact('requests','ghataats','ats'));
-                                                }
-                                
-                                            }
-                                        }
-                                
-                                        if($allow===0){
-                                            return view('access_denied');
-                                        }
-                                        //--access level-----
+        $user = auth()->user()->id;
+        $f_name=auth()->user()->f_name;
+        $l_name=auth()->user()->l_name;
+        $full_name=$f_name.' '.$l_name;
+        $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
+        $allow=0;
+        foreach ($groupusers as $groupuser) {
+           $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
+           foreach ($grouproles as $grouprole) {
+               $role_name=Role::where('id_role',$grouprole['id_role'])->first();
+               if($role_name['role'] ==="admin" or $role_name['role'] ==="track_create_program"){
+                 $allow=1;
+                 $requests = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T','>',0)->orderBy('ID_T', 'DESC')->get()->toArray();
+                 $ghataats =Ansaldo_type_ghataat::all();
+                 $ats=Ansaldo_bazsaz::all();
+                 return view('Ansaldo.ansaldo_send_program',compact('requests','ghataats','ats'));
+               }
+            }
+          }
+          if($allow===0){
+             return view('access_denied');
+          }
 
     }
+   /**
+     * In this method we we will get the whole rows from "ansaldo_send_bazsazi_ghataats" table.
+     * this data is the list of equipment sent for reconstructure.
+     * along with sending this data we need to send all types of equipment through json file to our view.
+    */
     public function total()
     {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $ID_BAS = DB::table('ansaldo_bazsazs')->get()->toArray();
         $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T','>',0)->orderBy('ID_T', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
     }
