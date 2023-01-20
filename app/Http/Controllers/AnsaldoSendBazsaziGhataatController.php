@@ -49,7 +49,7 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         $DATE_BEGIN1_array=explode('/',$request->input('DATE_BEGIN1'));
         $atp->DATE_BEGIN1=$this->convert($DATE_BEGIN1_array[0].$DATE_BEGIN1_array[1].$DATE_BEGIN1_array[2]);
         $atp->save();
-        return response()->json(['message'=> 'hi']);
+        return response()->json(['message'=> 'it was saved']);
     }
     /**
      * In this method we authorize the person who wants to open the form which we can initialize equipment which we want to send outside for 
@@ -95,9 +95,14 @@ class AnsaldoSendBazsaziGhataatController extends Controller
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
         $ID_BAS = DB::table('ansaldo_bazsazs')->get()->toArray();
-        $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T','>',0)->orderBy('ID_T', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
+        $data = DB::table('ansaldo_send_bazsazi_ghataats')->orderBy('ID_T', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);
     }
+   /**
+     * each user creates his/her own request for sending to the companies where this equipment is going to reconstructure
+     * in this method we want to get all such requests created by our current user in the date that user has loged in.
+     * along with this data we need to have types of all equipment and the id of our current user and recobstructor companies in the view.     
+    */
     public function total_today()
     {
         $id_user = auth()->user()->id;
@@ -117,7 +122,7 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
         $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T','>',0)->where('ID_USER',$id_user)->where('DATE_BEGIN1','>=',$current_date_shamsi)->orderBy('ID_T', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
     }
     public function onlyone()
     {
