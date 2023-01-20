@@ -115,31 +115,32 @@ class AnsaldoOutGhataatController extends Controller
         $data = DB::table('ansaldo_out_ghataats')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_T', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'current_user'=>$id_user,'current_date_shamsi'=>$g_d]);
     }
+   /**
+     * In this method we get the rows from ansaldo_out_ghataats table that current user has created.
+     * then we get the last row created by current user in ansaldo_out_ghataats table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats table to our view.
+     */
     public function onlyone()
     {
         $id_user = auth()->user()->id;
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
         $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
         $ID_T=Ansaldo_out_ghataat::where('id_user',$id_user)->orderBy('ID_T', 'desc')->first()->ID_T;
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_out_ghataats')->where('ID_T',$ID_T)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'ID_BAS'=>$ID_BAS]);
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);
     }
     /**
-     * in this method we want to get the name of a group with specific id.
-     * along with this row we need to have types of all equipment in the view.     
+     * in this method we want to get a request to send outside of power plant with specific id.
+     * along with this row we need to have types of all equipment and the companies which are registered as reconstructor in the view.     
     */
     public function onlyone2($id)
     {
-        $id_user = auth()->user()->id;
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
         $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_out_ghataats')->where('ID_T',$id)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
-    }
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3]);
     /**
-     * in this method we are going to remove a row from "ansaldo_ghataats" table.
+     * in this method we are going to remove a row from "ansaldo_out_ghataats" table.
      * before removing the row ,we will check if there is any row with this id in the history of that equipment.     
     */
     public function delete($id){
