@@ -91,8 +91,8 @@ class AnsaldoOutGhataatController extends Controller
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS]);
     }
     /**
-     * each user creates his/her own group and then insert many equpment info into this group.
-     * in this method we want to get the name of groups created by our current user in the date that user has loged in.
+     * each user creates his/her own request for sending to the companies where this equipment is going to reconstructure
+     * in this method we want to get all such requests created by our current user in the date that user has loged in.
      * along with this data we need to have types of all equipment and the id of our current user in the view.     
     */
     public function total_today()
@@ -112,8 +112,8 @@ class AnsaldoOutGhataatController extends Controller
         $current_date_shamsi=$date_shamsi_array[0].$date_shamsi_array[1].$date_shamsi_array[2];
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
         $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_out_ghataats')->where('ID_T','>',0)->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_T', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
+        $data = DB::table('ansaldo_out_ghataats')->where('ID_USER',$id_user)->where('DATE_SHAMSI','>=',$current_date_shamsi)->orderBy('ID_T', 'DESC')->get()->toArray();
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'current_user'=>$id_user,'current_date_shamsi'=>$g_d]);
     }
     public function onlyone()
     {
