@@ -7,10 +7,7 @@ use App\Ansaldo_sazandeh;
 use App\Ansaldo_tamirkaran;
 use App\User;
 use App\CalendarHelper;
-//use App\AnsaldoBazsaz;
 use Carbon\Carbon;
-use App\Exit_goods_permission;
-use App\Form;
 use App\Goodstype;
 use App\Grouprole;
 use App\Groupuser;
@@ -24,9 +21,12 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoSazandehController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     * In this method we are going to save information into "ansaldo_sazandehs" table.
+     * this table is used to keep the properties of companies selling devices and equipment to the power plant.
+     * first we create an instance from the the class of its model.
+     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_sazandehs" table
+     * then we send a message and the id of the constructor companies which through a json file to our view.
+    */
     public  function store(Request $request){
         $id_user=auth()->user()->id;
         $tamirkar= new Ansaldo_sazandeh();
