@@ -91,53 +91,34 @@ class AnsaldoTamiratProgramController extends Controller
         }
 
         $atp->save();
-        return response()->json([
-            'message'   => $request->file('select_file')
-//            'uploaded_image' => '<img src="/images/'.$new_name.'" class="img-thumbnail" width="300" />',
-//           'class_name'  => 'alert-success'
+        return response()->json(['message' => $request->file('select_file')
         ]);
     }
     public function create()
     {
-                                                //--access level-----
-                                                $user = auth()->user()->id;
-                                                $f_name=auth()->user()->f_name;
-                                                $l_name=auth()->user()->l_name;
-                                                $full_name=$f_name.' '.$l_name;
-                                                $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
-                                                $allow=0;
-                                                foreach ($groupusers as $groupuser) {
-                                                    $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
-                                                    foreach ($grouproles as $grouprole) {
-                                        
-                                                        $role_name=Role::where('id_role',$grouprole['id_role'])->first();
-                                                        if($role_name['role'] ==="admin" or $role_name['role'] ==="track_create_program"){
-                                                            $allow=1;
-                                                            $g_y = Carbon::now()->year;
-                                                            $g_m = Carbon::now()->month;
-                                                            $g_d = Carbon::now()->day;
-                                                            $Calendar=new CalendarHelper();
-                                                            $date_shamsi_array=$Calendar->gregorian_to_jalali($g_y, $g_m, $g_d);
-                                                            $date_shamsi=$date_shamsi_array[0].'/'.$date_shamsi_array[1].'/'.$date_shamsi_array[2];
-                                                            $mytime=Carbon::now();
-                                                            $part = auth()->user()->id_request_part;
-                                                            $requests=Ansaldo_tamirat_program::all();
-                                                            $anns=Ansaldo_nirogah_name::all();
-                                                            $auns=Ansaldo_unit_number::all();
-                                                            $atts=Ansaldo_tamirat_type::all();
-                                                            $ats=Ansaldo_tamirkaran::all();
-                                                    
-                                                            return view('Ansaldo.ansaldo_tamirat_program',compact('requests','anns','auns','atts','ats'));
-                                                        }
-                                        
-                                                    }
-                                                }
-                                        
-                                                if($allow===0){
-                                                    return view('access_denied');
-                                                }
-                                                //--access level-----
-
+        $user = auth()->user()->id;
+        $f_name=auth()->user()->f_name;
+        $l_name=auth()->user()->l_name;
+        $full_name=$f_name.' '.$l_name;
+        $groupusers=Groupuser::where('id_user',$user)->get()->toArray();
+        $allow=0;
+        foreach ($groupusers as $groupuser) {
+           $grouproles=Grouprole::where('id_gr',$groupuser['id_gr'])->get()->toArray();
+              foreach ($grouproles as $grouprole) {
+                 $role_name=Role::where('id_role',$grouprole['id_role'])->first();
+                 if($role_name['role'] ==="admin" or $role_name['role'] ==="track_create_program"){
+                   $requests=Ansaldo_tamirat_program::all();
+                   $anns=Ansaldo_nirogah_name::all();
+                   $auns=Ansaldo_unit_number::all();
+                   $atts=Ansaldo_tamirat_type::all();
+                   $ats=Ansaldo_tamirkaran::all();
+                   return view('Ansaldo.ansaldo_tamirat_program',compact('requests','anns','auns','atts','ats'));
+                  }
+               }
+          }
+          if($allow===0){
+            return view('access_denied');
+          }
     }
     public function total()
     {
