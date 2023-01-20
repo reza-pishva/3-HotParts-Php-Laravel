@@ -124,6 +124,11 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T','>',0)->where('ID_USER',$id_user)->where('DATE_BEGIN1','>=',$current_date_shamsi)->orderBy('ID_T', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'current_date_shamsi'=>$g_d]);//->where('DATE_BEGIN1',$current_date_shamsi)
     }
+    /**
+     * In this method we get the rows from ansaldo_send_bazsazi_ghataats table that current user has created.
+     * then we get the last row created by current user in ansaldo_send_bazsazi_ghataats table.
+     * in addition to this data we send type of equipment from ansaldo_type_ghataats and and recobstructor companies from ansaldo_bazsazs table to our view.
+     */
     public function onlyone()
     {
         $id_user = auth()->user()->id;
