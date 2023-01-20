@@ -17,9 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\User;
-use App\Form;
-use App\Goodstype;
-use App\Grouprole;
+
+\use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
 use App\Role;
@@ -57,7 +56,7 @@ class AnsaldoSendBazsaziGhataatController extends Controller
      * first we get the id , first name and last name of current user.then we retrieve the groups that our user belongs to.
      * then we get the roles of this user from different groups which this user belongs to after first foreach.
      * in the second foreach we get the name of roles of this user that has and if it was admin or 'track_create_program' 
-     * we return the view of ansaldo_send_program and at the same time we pass the type of equipment and reconstructurerer companies to this view
+     * we return the view of ansaldo_send_program and at the same time we pass the type of equipment and reconstructor companies to this view
      * if this user did not have acceptable roles to open this view we will return access_denied instead.
      */
     public function create()
@@ -132,12 +131,11 @@ class AnsaldoSendBazsaziGhataatController extends Controller
     public function onlyone()
     {
         $id_user = auth()->user()->id;
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
+        $ID_TGS = DB::table('ansaldo_type_ghataats')->get()->toArray();
+        $ID_BAS = DB::table('ansaldo_bazsazs')->get()->toArray();
         $ID_T=Ansaldo_send_bazsazi_ghataat::where('id_user',$id_user)->orderBy('ID_T', 'desc')->first()->ID_T;
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T',$ID_T)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3]);
+        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);
     }
    /**
      * in this method we want to get a request to send outside of power plant with specific id.
@@ -171,7 +169,7 @@ class AnsaldoSendBazsaziGhataatController extends Controller
 
     }
     /**
-     * in this method we are going to edit a row from "ansaldo_out_ghataats" table.
+     * in this method we are going to edit a row from "ansaldo_send_bazsazi_ghataats" table.
     */
     public function edit(Request $request)
     {
@@ -203,7 +201,7 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         return $englishNumbersOnly;
     }
    /**
-     * In this method we are going to create a report from "ansaldo_out_ghataats" table.
+     * In this method we are going to create a report from "bazsazi_view" view.
      * first we get some information from base tables which we want to use them in where part of our select command.
      * then we will get some data from our search form to be used in where part of our select command as well.
      * for the field that we do not want to set anything in our where part we will use '>0' for their id to cover all possible values.
@@ -215,8 +213,6 @@ class AnsaldoSendBazsaziGhataatController extends Controller
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
         $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $users = DB::table('users')->where('id','>',0)->get()->toArray();
         $id_user = auth()->user()->id;
         $ID_BA_R=$request->input('ID_BA_R');
         $ID_TG_R=$request->input('ID_TG_R');
@@ -251,22 +247,7 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         $value=['id_user'=>$id_user,'query_text'=>$query];
         DB::table('querytexts')->insert($value);
         $requests = DB::select(DB::raw($query));
-        return response()->json(['results'=> $requests,'ID_BAS'=>$ID_BAS,'ID_TGS'=>$ID_TGS,'ID_TTS'=>$RESV_R,'ID_USER'=>$id_user,'ID_USERS'=>$data3,'QUERY'=>$query]);
+        return response()->json(['results'=> $requests,'ID_BAS'=>$ID_BAS,'ID_TGS'=>$ID_TGS,'ID_TTS'=>$RESV_R,'ID_USER'=>$id_user,'QUERY'=>$query]);
     }
-    public function report_queryp3($id)
-    {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T',$id)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);//,'ID_USERS'=>$ID_USERS
-    }
-    public function report_queryp4($id)
-    {
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_resv_bazsazi_ghataats')->where('ID_SUB',$id)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);//,'ID_USERS'=>$ID_USERS
-    }
-
 
 }
