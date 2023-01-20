@@ -193,12 +193,24 @@ class AnsaldoSendBazsaziGhataatController extends Controller
                 'DATE_BEGIN1'=>$DATE_BEGIN1_EDIT]);
         return response()->json(['success'=>'the information has successfuly saved','ID_T'=>$ID_T_EDIT]);
     }
+   /**
+     * In this method we are going to convert latin numbers into persian numbers.
+    */
     public function convert($string) {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $num = range(0, 9);
         $englishNumbersOnly = str_replace($persian, $num, $string);
         return $englishNumbersOnly;
     }
+   /**
+     * In this method we are going to create a report from "ansaldo_out_ghataats" table.
+     * first we get some information from base tables which we want to use them in where part of our select command.
+     * then we will get some data from our search form to be used in where part of our select command as well.
+     * for the field that we do not want to set anything in our where part we will use '>0' for their id to cover all possible values.
+     * in the end we stick all these part together to create a raw query.
+     * after that we will save this query string and the id of the user who creates this report in the querytext table.
+     * then we will use DB::select command to use this raw query and send it to our view as json file.
+     */
     public function report_queryp(Request $request)
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
@@ -206,14 +218,6 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $users = DB::table('users')->where('id','>',0)->get()->toArray();
         $id_user = auth()->user()->id;
-//        $date_exit_shamsi1=$request->input('DATE_BEGINR');
-//        $date_shamsi_array1 = explode('/',$date_exit_shamsi1);
-//        $date_exit_shamsi2=$request->input('DATE_ENDR');
-//        $date_shamsi_array2 = explode('/',$date_exit_shamsi2);
-//        $date_exit_shamsi1=$date_shamsi_array1[0].$date_shamsi_array1[1].$date_shamsi_array1[2];
-//        $date_exit_shamsi2=$date_shamsi_array2[0].$date_shamsi_array2[1].$date_shamsi_array2[2];
-//        $date_exit_shamsi1=$this->convert($date_exit_shamsi1);
-//        $date_exit_shamsi2=$this->convert($date_exit_shamsi2);
         $ID_BA_R=$request->input('ID_BA_R');
         $ID_TG_R=$request->input('ID_TG_R');
         $RESV_R=$request->input('RESV_R');
@@ -233,11 +237,6 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         if($ID_TG_R!=0){
             $query2="ID_TG=".$ID_TG_R;
         }
-
-//        $query4="DATE_BEGIN1>=".$date_exit_shamsi1;
-//        $query5="DATE_BEGIN1<=".$date_exit_shamsi2;
-
-
         Querytext::where('id_user', $id_user)->delete();
         if($RESV_R==0){
             $query="SELECT * FROM bazsazi_view WHERE ".$query1." AND ".$query2." GROUP BY ID_T ORDER BY ID_T DESC";
@@ -254,25 +253,10 @@ class AnsaldoSendBazsaziGhataatController extends Controller
         $requests = DB::select(DB::raw($query));
         return response()->json(['results'=> $requests,'ID_BAS'=>$ID_BAS,'ID_TGS'=>$ID_TGS,'ID_TTS'=>$RESV_R,'ID_USER'=>$id_user,'ID_USERS'=>$data3,'QUERY'=>$query]);
     }
-    public function report_queryp2()
-    {
-        $ID_UNS = DB::table('ansaldo_unit_numbers')->where('ID_UN','>',0)->get()->toArray();
-        $ID_TTS = DB::table('ansaldo_tamirat_types')->where('ID_TT','>',0)->get()->toArray();
-        $ID_TAS = DB::table('ansaldo_tamirkarans')->where('ID_TA','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $id_user = auth()->user()->id;
-        $query = DB::table('querytexts')->where('ID_USER',$id_user)->orderBy('id_qu', 'DESC')->first()->query_text;
-        $requests = DB::select(DB::raw($query));
-        return response()->json(['results'=> $requests,'ID_UNS'=>$ID_UNS,'ID_TAS'=>$ID_TAS,'ID_TTS'=>$ID_TTS,'ID_USERS'=>$data3,'ID_USER'=>$id_user,'QUERY'=>$query]);
-    }
     public function report_queryp3($id)
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
         $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-//        $ID_UNS = DB::table('ansaldo_unit_numbers')->where('ID_UN','>',0)->get()->toArray();
-//        $ID_TTS = DB::table('ansaldo_tamirat_types')->where('ID_TT','>',0)->get()->toArray();
-//        $ID_TAS = DB::table('ansaldo_tamirkarans')->where('ID_TA','>',0)->get()->toArray();
-//        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_send_bazsazi_ghataats')->where('ID_T',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);//,'ID_USERS'=>$ID_USERS
     }
@@ -280,10 +264,6 @@ class AnsaldoSendBazsaziGhataatController extends Controller
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
         $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-//        $ID_UNS = DB::table('ansaldo_unit_numbers')->where('ID_UN','>',0)->get()->toArray();
-//        $ID_TTS = DB::table('ansaldo_tamirat_types')->where('ID_TT','>',0)->get()->toArray();
-//        $ID_TAS = DB::table('ansaldo_tamirkarans')->where('ID_TA','>',0)->get()->toArray();
-//        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
         $data = DB::table('ansaldo_resv_bazsazi_ghataats')->where('ID_SUB',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);//,'ID_USERS'=>$ID_USERS
     }
