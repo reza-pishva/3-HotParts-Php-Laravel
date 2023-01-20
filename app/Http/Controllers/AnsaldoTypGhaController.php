@@ -1,16 +1,9 @@
 <?php
 namespace App\Http\Controllers;
-
-
-
 use App\Ansaldo_type_ghataat;
 use App\User;
 use App\CalendarHelper;
-//use App\AnsaldoBazsaz;
 use Carbon\Carbon;
-use App\Exit_goods_permission;
-use App\Form;
-use App\Goodstype;
 use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
@@ -23,9 +16,12 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoTypGhaController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     * In this method we are going to save infoarmation into "ansaldo_type_ghataats" table.
+     * this table is used to keep the type of devices and equipment .
+     * first we create an instance from the the class of its model.
+     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_type_ghataats" table
+     * then we send a message and the id of the new type through a json file to our view.
+    */
     public  function store(Request $request){
         $id_user=auth()->user()->id;
         $bazsaz= new Ansaldo_type_ghataat();
@@ -40,11 +36,19 @@ class AnsaldoTypGhaController extends Controller
         $id_tg = DB::table('ansaldo_type_ghataats')->where('ID_USER',$id_user)->orderBy('ID_TG', 'DESC')->first()->ID_TG;
         return response()->json(['success'=>'hi','id_tg'=>$id_tg]);//,'id_ba'=>$id_ba
     }
+   /**
+     * In this method we will get the whole rows from "ansaldo_type_ghataats" table.
+     * this data is the list of types related to devices.
+    */
     public function typgha_total()
     {
         $data = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
         return response()->json(['results'=> $data]);
     }
+   /**
+     * in this method we are going to remove a row from "ansaldo_sellers" table.
+     * before removing the row ,we will check if there is any row with this id in the history of that equipment.     
+    */
     public function delete($id){
         $n1= DB::table('ansaldo_group_names')->where('ID_TG',$id)->get()->count();
         $n2= DB::table('ansaldo_buy_ghataats')->where('ID_TG',$id)->get()->count();
@@ -59,6 +63,9 @@ class AnsaldoTypGhaController extends Controller
             return response()->json(['success'=>'hi','n'=>$n]);
         }
     }
+   /**
+     * in this method we are going to edit a row from "ansaldo_sellers" table.
+    */
     public function edit(Request $request)
     {
         $id_tg=$request->input('ID_TG_EDIT');
