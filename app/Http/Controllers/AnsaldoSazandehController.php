@@ -35,11 +35,19 @@ class AnsaldoSazandehController extends Controller
         $tamirkar->save();
         return response()->json(['success'=>'hi']);//,'id_ba'=>$id_ba
     }
+   /**
+     * In this method we will get the whole rows from "ansaldo_sazandehs" table.
+     * this data is the list of companies which makes devices and equipment.
+    */
     public function total()
     {
         $data = DB::table('ansaldo_sazandehs')->where('ID_S','>',0)->get()->toArray();
         return response()->json(['results'=> $data]);
     }
+   /**
+     * in this method we are going to remove a row from "ansaldo_sazandehs" table.
+     * before removing the row ,we will check if there is any row with this id in the 'ansaldo_ghataats' table.     
+    */
     public function delete($id){
         $n= DB::table('ansaldo_ghataats')->where('MAKER',$id)->get()->count();
         if($n==0){
@@ -49,6 +57,9 @@ class AnsaldoSazandehController extends Controller
             return response()->json(['success'=>'hi','n'=>$n]);
         }
     }
+   /**
+     * in this method we are going to edit a row from "ansaldo_sazandehs" table.
+    */
     public function edit(Request $request)
     {
         $id_s=$request->input('ID_S_EDIT');
