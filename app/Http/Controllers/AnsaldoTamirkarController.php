@@ -41,8 +41,8 @@ class AnsaldoTamirkarController extends Controller
         return response()->json(['results'=> $data]);
     }
     /**
-     * in this method we are going to remove a row from "ansaldo_sellers" table.
-     * before removing the row ,we will check if there is any row with this id in the history of that equipment.     
+     * in this method we are going to remove a row from "ansaldo_tamirkarans" table.
+     * before removing the row ,we will check if there is any row with this id in ansaldo_tamirat_programs table.     
     */
     public function delete($id){
         $n= DB::table('ansaldo_tamirat_programs')->where('ID_TA',$id)->get()->count();
@@ -54,7 +54,7 @@ class AnsaldoTamirkarController extends Controller
         }
     }
     /**
-     * in this method we are going to edit a row from "ansaldo_sellers" table.
+     * in this method we are going to edit a row from "ansaldo_tamirkarans" table.
     */
     public function tamirkar_edit(Request $request)
     {
