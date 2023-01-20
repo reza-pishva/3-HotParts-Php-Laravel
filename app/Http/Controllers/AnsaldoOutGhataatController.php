@@ -153,9 +153,7 @@ class AnsaldoOutGhataatController extends Controller
         }
     }
     /**
-     * in this method we are going to edit a row from "ansaldo_ghataats" table.
-     * before updating the row ,we check if there is any row with the same serial number exists in that table.  
-     * if there was,user can not edit that row.  
+     * in this method we are going to edit a row from "ansaldo_out_ghataats" table.
     */
     public function edit(Request $request)
     {
@@ -188,7 +186,7 @@ class AnsaldoOutGhataatController extends Controller
         return $englishNumbersOnly;
     }
     /**
-     * In this method we are going to create a report from ansaldo_group_names table.
+     * In this method we are going to create a report from "ansaldo_out_ghataats" table.
      * first we get some information from base tables which we want to use them in where part of our select command.
      * then we will get some data from our search form to be used in where part of our select command as well.
      * for the field that we do not want to set anything in our where part we will use '>0' for their id to cover all possible values.
@@ -217,24 +215,12 @@ class AnsaldoOutGhataatController extends Controller
         $requests = DB::select(DB::raw($query));
         return response()->json(['results'=> $requests,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USER'=>$id_user,'ID_USERS'=>$data3,'QUERY'=>$query]);
     }
-    public function report_queryp2()
-    {
-        $ID_UNS = DB::table('ansaldo_unit_numbers')->where('ID_UN','>',0)->get()->toArray();
-        $ID_TTS = DB::table('ansaldo_tamirat_types')->where('ID_TT','>',0)->get()->toArray();
-        $ID_TAS = DB::table('ansaldo_tamirkarans')->where('ID_TA','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $id_user = auth()->user()->id;
-        $query = DB::table('querytexts')->where('ID_USER',$id_user)->orderBy('id_qu', 'DESC')->first()->query_text;
-        $requests = DB::select(DB::raw($query));
-        return response()->json(['results'=> $requests,'ID_UNS'=>$ID_UNS,'ID_TAS'=>$ID_TAS,'ID_TTS'=>$ID_TTS,'ID_USERS'=>$data3,'ID_USER'=>$id_user,'QUERY'=>$query]);
-    }
-    public function report_queryp5($id)
-    {
-        $ID_BAS = DB::table('ansaldo_bazsazs')->where('ID_BA','>',0)->get()->toArray();
-        $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_out_ghataats')->where('ID_T',$id)->get()->toArray();
-        return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS]);//,'ID_USERS'=>$ID_USERS
-    }
+  
+   /**
+     * In this software we have different types of record registered for each device or equipment.
+     * One of them is the record used for keeping the history of device which we have sent for reconstructure.
+     * In this method we are going to get the list of devices with specific request(where('ID_T',$id)->where('SAV_TYPE','O')).
+    */    
     public function get_history($id)
     {
         $data = DB::table('savabegh_total_view')->where('ID_T',$id)->where('SAV_TYPE','O')->get()->toArray();
