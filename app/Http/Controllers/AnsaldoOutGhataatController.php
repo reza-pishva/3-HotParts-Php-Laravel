@@ -25,9 +25,12 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoOutGhataatController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     * In this method we are going to save infoarmation into "ansaldo_ghataats" table.
+     * this table is used to keep the properties of equipment used in hot parts of power plant.
+     * first we create an instance from the the class of its model.
+     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_ghataats" table
+     * then we send a message and the the id of the group which this part belongs to through a json file to our view.
+    */
     public  function store(Request $request){
         $id_user=auth()->user()->id;
         $atp= new Ansaldo_out_ghataat();
@@ -67,6 +70,10 @@ class AnsaldoOutGhataatController extends Controller
           return view('access_denied');
         }
     }
+    /**
+     * In this method we we will get the whole rows from "ansaldo_ghataats" table.
+     * along with sending this data we need to send all types of equipment through json file to our view.
+    */
     public function total()
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
@@ -74,6 +81,11 @@ class AnsaldoOutGhataatController extends Controller
         $data = DB::table('ansaldo_out_ghataats')->where('ID_T','>',0)->orderBy('ID_T', 'DESC')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
     }
+    /**
+     * each user creates his/her own group and then insert many equpment info into this group.
+     * in this method we want to get the name of groups created by our current user in the date that user has loged in.
+     * along with this data we need to have types of all equipment and the id of our current user in the view.     
+    */
     public function total_today()
     {
         $id_user = auth()->user()->id;
@@ -104,6 +116,10 @@ class AnsaldoOutGhataatController extends Controller
         $data = DB::table('ansaldo_out_ghataats')->where('ID_T',$ID_T)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3,'ID_BAS'=>$ID_BAS]);
     }
+    /**
+     * in this method we want to get the name of a group with specific id.
+     * along with this row we need to have types of all equipment in the view.     
+    */
     public function onlyone2($id)
     {
         $id_user = auth()->user()->id;
@@ -113,6 +129,10 @@ class AnsaldoOutGhataatController extends Controller
         $data = DB::table('ansaldo_out_ghataats')->where('ID_T',$id)->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_BAS'=>$ID_BAS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
     }
+    /**
+     * in this method we are going to remove a row from "ansaldo_ghataats" table.
+     * before removing the row ,we will check if there is any row with this id in the history of that equipment.     
+    */
     public function delete($id){
         $n= Ansaldo_savabegh::where('ID_T', $id)->where('SAV_TYPE','O')->get()->count();
         if($n==0){
@@ -122,6 +142,11 @@ class AnsaldoOutGhataatController extends Controller
             return response()->json(['success'=>'hi','perm'=>0]);
         }
     }
+    /**
+     * in this method we are going to edit a row from "ansaldo_ghataats" table.
+     * before updating the row ,we check if there is any row with the same serial number exists in that table.  
+     * if there was,user can not edit that row.  
+    */
     public function edit(Request $request)
     {
         $ID_T_EDIT=$request->input('ID_T_EDIT');
@@ -143,6 +168,9 @@ class AnsaldoOutGhataatController extends Controller
             'DATE_SHAMSI'=>$DATE_SHAMSI_EDIT]);
         return response()->json(['success'=>'the information has successfuly saved','ID_T'=>$ID_T_EDIT]);
     }
+   /**
+     * In this method we are going to convert latin numbers into persian numbers.
+    */
     public function convert($string) {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $num = range(0, 9);
