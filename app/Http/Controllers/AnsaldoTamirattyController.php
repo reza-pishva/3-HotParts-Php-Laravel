@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use App\Ansaldo_tamirat_type;
 use App\User;
 use App\CalendarHelper;
-//use App\AnsaldoBazsaz;
 use Carbon\Carbon;
-use App\Exit_goods_permission;
-use App\Form;
-use App\Goodstype;
 use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
@@ -22,9 +18,12 @@ use Illuminate\Support\Facades\DB;
 class AnsaldoTamirattyController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     * In this method we are going to save infoarmation into "ansaldo_tamirat_types" table.
+     * this table is used to keep the type of repairments in the power plant.
+     * first we create an instance from the the class of its model.
+     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_tamirat_types" table
+     * then we send a message and the id of "ansaldo_tamirat_types" table through a json file to our view.
+    */
     public  function tamiratty_store(Request $request){
         $id_user=auth()->user()->id;
         $bazsaz= new Ansaldo_tamirat_type();
