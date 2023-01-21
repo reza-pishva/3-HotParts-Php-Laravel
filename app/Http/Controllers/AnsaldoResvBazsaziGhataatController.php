@@ -176,12 +176,20 @@ class AnsaldoResvBazsaziGhataatController extends Controller
         $englishNumbersOnly = str_replace($persian, $num, $string);
         return $englishNumbersOnly;
     }
+    /**
+     * in this method we get devices or equipment from the view created by 'ansaldo_savabeghs','ansaldo_ghataats','ansaldo_group_names','ansaldo_type_ghataats'
+     * when our main request defined for reconstructure and we need to have access to specific sub request.
+     */
     public function get_history($id)
     {
         $data = DB::table('savabegh_total_view')->where('ID_SUB',$id)->where('SAV_TYPE','B')->get()->toArray();
         return response()->json(['results'=> $data]);
 
     }
+   /**
+     * in this method we get devices or equipment from the view created by 'ansaldo_savabeghs','ansaldo_ghataats','ansaldo_group_names','ansaldo_type_ghataats'
+     * when our request defined for reconstructure and we need to have access to specific main request.
+     */
     public function get_history2($id)
     {
         $data = DB::table('savabegh_total_view')->where('ID_T',$id)->where('SAV_TYPE','B')->get()->toArray();
