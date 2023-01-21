@@ -113,8 +113,8 @@ class AnsaldoResvBazsaziGhataatController extends Controller
         }
     }
     /**
-     * in this method we are going to edit a row from 'ansaldo_resv_bazsazi_ghataats' table with specific id. We should note that we are not allowed to
-     * remove rows that their ids used in 'ansaldo_resv_bazsazi_ghataats' table. 
+     * in this method we are going to edit a row from 'ansaldo_resv_bazsazi_ghataats' table with specific id. We should note that we do this job in two condition
+     * first when we have something to upload and second when there is nothing to upload as document.
      */
     public function edit(Request $request)
     {
@@ -166,6 +166,9 @@ class AnsaldoResvBazsaziGhataatController extends Controller
 
         return response()->json(['success'=>'the information has successfuly saved','FILE'=>$FILE_NAME_EDIT,'sum'=>$error]);
     }
+    /**
+     * in this method we convert latin numbers into persian numbers
+     */
     public function convert($string) {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $num = range(0, 9);
