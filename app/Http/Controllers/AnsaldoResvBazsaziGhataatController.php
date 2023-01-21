@@ -149,6 +149,12 @@ class AnsaldoResvBazsaziGhataatController extends Controller
                 'RESV'=>$RESV,
                 'COUNT_GH'=>$COUNT_GH_EDIT,
                 'DATE_SHAMSI'=>$DATE_SHAMSI_EDIT]);
+        }else{
+            Ansaldo_resv_bazsazi_ghataat::where('ID_SUB', $ID_SUB_EDIT)->update([
+                'ID_T'=>$ID_T_EDIT,
+                'RESV'=>$RESV,
+                'COUNT_GH'=>$COUNT_GH_EDIT,
+                'DATE_SHAMSI'=>$DATE_SHAMSI_EDIT]);
         }
         $sum = Ansaldo_resv_bazsazi_ghataat::where('ID_T', $request->input('ID_T_EDIT'))->sum('COUNT_GH');
         Ansaldo_send_bazsazi_ghataat::where('ID_T',$request->input('ID_T_EDIT'))->update(['EXIT_NO'=>$sum]);
