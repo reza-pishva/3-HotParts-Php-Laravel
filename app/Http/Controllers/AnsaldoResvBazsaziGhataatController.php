@@ -112,6 +112,10 @@ class AnsaldoResvBazsaziGhataatController extends Controller
             return response()->json(['success'=>'hi','n'=>$n]);
         }
     }
+    /**
+     * in this method we are going to edit a row from 'ansaldo_resv_bazsazi_ghataats' table with specific id. We should note that we are not allowed to
+     * remove rows that their ids used in 'ansaldo_resv_bazsazi_ghataats' table. 
+     */
     public function edit(Request $request)
     {
         $ID_SUB_EDIT=$request->input('ID_SUB_EDIT');
@@ -121,9 +125,6 @@ class AnsaldoResvBazsaziGhataatController extends Controller
         ]);
         $ID_T_EDIT=$request->input('ID_T_EDIT');
         $COUNT_GH_EDIT=$request->input('COUNT_GH_EDIT');
-        // $DATE_BEGIN_SH=$request->input('DATE_SHAMSI_EDIT');
-        //$DATE_BEGIN_SH_array=explode('/',$DATE_BEGIN_SH);
-        //$DATE_SHAMSI_EDIT=$this->convert($DATE_BEGIN_SH_array[0].$DATE_BEGIN_SH_array[1].$DATE_BEGIN_SH_array[2]);
         if($request->input('RESV_EDIT')==1){
             $RESV =1;
         }else{
@@ -148,15 +149,7 @@ class AnsaldoResvBazsaziGhataatController extends Controller
                 'RESV'=>$RESV,
                 'COUNT_GH'=>$COUNT_GH_EDIT,
                 'DATE_SHAMSI'=>$DATE_SHAMSI_EDIT]);
-        }else{
-            Ansaldo_resv_bazsazi_ghataat::where('ID_SUB', $ID_SUB_EDIT)->update([
-                'FILE_NAME'=>$FILE_NAME_EDIT,
-                'ID_T'=>$ID_T_EDIT,
-                'RESV'=>$RESV,
-                'COUNT_GH'=>$COUNT_GH_EDIT,
-                'DATE_SHAMSI'=>$DATE_SHAMSI_EDIT]);
         }
-
         $sum = Ansaldo_resv_bazsazi_ghataat::where('ID_T', $request->input('ID_T_EDIT'))->sum('COUNT_GH');
         Ansaldo_send_bazsazi_ghataat::where('ID_T',$request->input('ID_T_EDIT'))->update(['EXIT_NO'=>$sum]);
         $GROUP_COUNT=Ansaldo_send_bazsazi_ghataat::where('ID_T', $request->input('ID_T_EDIT'))->orderBy('ID_T', 'desc')->first()->GROUP_COUNT;
