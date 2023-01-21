@@ -124,7 +124,7 @@ class AnsaldoSavabeghController extends Controller
                                             $bas=Ansaldo_bazsaz::all();
                                             $requests = Ansaldo_group_name::all();
                                             $ghataats =Ansaldo_type_ghataat::all();
-                                            $sazs = DB::table('ansaldo_sazandehs')->where('ID_S','>',0)->get()->toArray();
+                                            $sazs = DB::table('ansaldo_sazandehs')->get()->toArray();
                                             return view('Ansaldo.ansaldo_savabegh_search_by_ide',compact('requests','ghataats','sazs','anns','auns','atts','ats','bas','tgs','sellers'));
                                         }
                         
@@ -140,8 +140,8 @@ class AnsaldoSavabeghController extends Controller
     public function total()
     {
         $ID_TGS = DB::table('ansaldo_type_ghataats')->where('ID_TG','>',0)->get()->toArray();
-        $data3 = DB::table('users')->where('id','>',0)->get()->toArray();
-        $data = DB::table('ansaldo_group_names')->where('ID_G','>',0)->get()->toArray();
+        $data3 = DB::table('users')->get()->toArray();
+        $data = DB::table('ansaldo_group_names')->get()->toArray();
         return response()->json(['results'=> $data,'ID_TGS'=>$ID_TGS,'ID_USERS'=>$data3]);//,'ID_USERS'=>$ID_USERS
     }
     public function total2($id)
