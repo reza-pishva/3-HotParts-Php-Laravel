@@ -89,16 +89,21 @@ class AnsaldoResvBazsaziGhataatController extends Controller
 
         return response()->json(['message'=> $request->file('select_file'),'sum'=>$error]);
     }
+    /**
+     * in this method we are going to get all rows from 'ansaldo_resv_bazsazi_ghataats' with specific id of the program we defined(it could be maintenance program
+     * or reconstructure program and ...) our request for sending and recieving devices and equipment to companies which is in charge of reconstructing.
+     * in addition to simple properties
+     */
     public function total($id)
     {
         $data = DB::table('ansaldo_resv_bazsazi_ghataats')->where('ID_T',$id)->orderBy('ID_SUB', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data]);//,'ID_USERS'=>$ID_USERS
+        return response()->json(['results'=> $data]);
     }
-    public function resvs_for_send($id)
-    {
-        $data = DB::table('ansaldo_resv_bazsazi_ghataats')->where('ID_T',$id)->orderBy('ID_SUB', 'DESC')->get()->toArray();
-        return response()->json(['results'=> $data]);//,'ID_USERS'=>$ID_USERS
-    }
+    /**
+     * in this method we are going to remove a row from '' table
+     * or reconstructure program and ...) our request for sending and recieving devices and equipment to companies which is in charge of reconstructing.
+     * in addition to simple properties
+     */
     public function delete($id){
         $n= DB::table('ansaldo_savabeghs')->where('SAV_TYPE','B')->where('ID_SUB',$id)->get()->count();
         if($n==0){
