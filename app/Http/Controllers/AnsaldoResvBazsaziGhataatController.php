@@ -100,9 +100,8 @@ class AnsaldoResvBazsaziGhataatController extends Controller
         return response()->json(['results'=> $data]);
     }
     /**
-     * in this method we are going to remove a row from '' table
-     * or reconstructure program and ...) our request for sending and recieving devices and equipment to companies which is in charge of reconstructing.
-     * in addition to simple properties
+     * in this method we are going to remove a row from 'ansaldo_resv_bazsazi_ghataats' table with specific id. We should note that we are not allowed to
+     * remove rows that their ids used in 'ansaldo_resv_bazsazi_ghataats' table. 
      */
     public function delete($id){
         $n= DB::table('ansaldo_savabeghs')->where('SAV_TYPE','B')->where('ID_SUB',$id)->get()->count();
