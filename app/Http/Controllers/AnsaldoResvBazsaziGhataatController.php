@@ -114,7 +114,8 @@ class AnsaldoResvBazsaziGhataatController extends Controller
     }
     /**
      * in this method we are going to edit a row from 'ansaldo_resv_bazsazi_ghataats' table with specific id. We should note that we do this job in two condition
-     * first when we have something to upload and second when there is nothing to upload as document.
+     * first when we have something to upload and second when there is nothing to upload as document.in the end we have to check the number of items that we have
+     * recieved from companies should not be more than the number of original devices which we have sent for recontructure.
      */
     public function edit(Request $request)
     {
