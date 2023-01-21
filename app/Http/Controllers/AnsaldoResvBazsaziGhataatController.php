@@ -23,8 +23,13 @@ use App\User;
 class AnsaldoResvBazsaziGhataatController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * in this method we are going to save some information into 'ansaldo_resv_bazsazi_ghataats'.this table is used to maintain information about 
+     * our request for sending and recieving devices and equipment to companies which is in charge of reconstructing.in addition to simple properties
+     * that we get from the form created to post data to this method we should upload document about our request.So we will use 'Validator::make('
+     * to validate the items we want to upload and then we create an instance from  'Ansaldo_resv_bazsazi_ghataat' model. before saving this information
+     * we should compute the number of devices that we get from companies and we should compare it with the total number of devices that we have sent through 
+     * different request. it is clear that it should not more than the total number of devices that we have sent through 
+     * different request.
      */
     public  function store(Request $request){
         $validation = Validator::make($request->all(), [
@@ -46,8 +51,6 @@ class AnsaldoResvBazsaziGhataatController extends Controller
         }else{
             $DATE_BEGIN_SH_array=explode('/',$request->input('DATE_SHAMSI'));
         }
-        // $atp->DATE_SHAMSI=$request->input('DATE_SHAMSI');
-        // $DATE_BEGIN_SH_array=explode('/',$atp->DATE_SHAMSI);
         $atp->DATE_SHAMSI=$this->convert($DATE_BEGIN_SH_array[0].$DATE_BEGIN_SH_array[1].$DATE_BEGIN_SH_array[2]);
         if($request->file('select_file')){
             if($validation->failed()==false)
