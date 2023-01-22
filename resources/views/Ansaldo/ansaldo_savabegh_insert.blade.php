@@ -1,7 +1,6 @@
 @extends('layouts.ansaldo_layouts.app_savabegh_insert')
 @section('content')
 <script>
-
     $(document).ready(function() {
 
         var eq_karkard1=0
@@ -5905,20 +5904,5 @@
    @include('AnsaldoComponents.component10')
    @include('AnsaldoComponents.component11')
    @include('AnsaldoComponents.component12')
-</div>
-
-
-
-
-
-
-
-
-
-       
-
-
-
-        
+</div>        
 @endsection
-
