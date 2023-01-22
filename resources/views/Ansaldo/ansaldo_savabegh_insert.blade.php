@@ -2,12 +2,9 @@
 @section('content')
 <script>
     $(document).ready(function() {
-
         var eq_karkard1=0
         var karkard_mo3=0
         var karkard_mo2=0
-        
-
         var bazsazi_sub_no=0
         var anbar_sub_no=0
         var karkard=0
@@ -600,8 +597,6 @@
             if(program==2){
                 id_t1=id_t_bazsazi1;
                 id_sub1=id_t_bazsazi2;
-                // id_t_bazsazi1=0;
-                // id_t_bazsazi2=0;
             }
             if(insert_type==3){
                 radif1=$("#radif_insert1").val()
