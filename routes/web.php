@@ -173,5 +173,6 @@ Route::get('/get-history-buy-prog/{id}','AnsaldoBuyGhataatController@get_history
 Route::get('/get-history-out-prog/{id}','AnsaldoBuyGhataatController@get_history');
 Route::get('/get-history-enter_exit-prog/{id}','AnsaldoOutGhataatController@get_history');
 
-
+Route::get('/jalali','AnsaldoTamiratProgramController@convert_to_jalali');
+Route::get('/update_exit_no','AnsaldoStoreProgramOutController@update_exit_no');
 
