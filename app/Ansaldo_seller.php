@@ -9,6 +9,6 @@ class Ansaldo_seller extends Model
     protected $fillable = [
         'SELLER',
         'ID_USER',
-        'ID_USER2',
+        
     ];
 }
