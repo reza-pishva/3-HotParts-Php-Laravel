@@ -33,7 +33,10 @@ Route::post('/tamirkar-store', 'AnsaldoTamirkarController@tamirkar_store')->name
 Route::delete('/tamirkar-delete/{id}', 'AnsaldoTamirkarController@delete');
 Route::post('/tamirkar-edit', 'AnsaldoTamirkarController@tamirkar_edit')->name('tamirkar.edit');
 
-
+Route::get('/tamiratty-total','AnsaldoTamirattyController@tamiratty_total');
+Route::post('/tamiratty-store', 'AnsaldoTamirattyController@tamiratty_store')->name('tamiratty.store');
+Route::delete('/tamiratty-delete/{id}', 'AnsaldoTamirattyController@delete');
+Route::post('/tamiratty-edit', 'AnsaldoTamirattyController@tamiratty_edit')->name('tamiratty.edit');
 
 Route::get('/typgha-total','AnsaldoTypGhaController@typgha_total');
 Route::post('/typgha-store', 'AnsaldoTypGhaController@store')->name('typgha.store');
