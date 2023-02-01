@@ -15,7 +15,6 @@ class Ansaldo_savabegh extends Model
         'DISCRIPTION',
         'SAV_TYPE',
         'ID_SUB',
-        'ID_USER2',
-        'ID_USER3',
+
     ];
 }
