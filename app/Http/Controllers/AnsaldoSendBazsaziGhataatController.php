@@ -1,22 +1,4 @@
-<?php
-namespace App\Http\Controllers;
 
-use App\Ansaldo_bazsaz;
-use App\Ansaldo_resv_bazsazi_ghataat;
-use App\Ansaldo_savabegh;
-use App\Ansaldo_send_bazsazi_ghataat;
-use App\Ansaldo_tamirat_program;
-use App\Ansaldo_tamirat_type;
-use App\Ansaldo_tamirkaran;
-use App\Ansaldo_type_ghataat;
-use App\Ansaldo_unit_number;
-use App\Querytext;
-use App\CalendarHelper;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use App\User;
 
 \use App\Grouprole;
 use App\Groupuser;
