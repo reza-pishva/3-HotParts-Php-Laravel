@@ -28,13 +28,7 @@ use App\User_role;
 
 class AnsaldoSendBazsaziGhataatController extends Controller
 {
-    /**
-     * In this method we are going to save infoarmation into "ansaldo_send_bazsazi_ghataats" table.
-     * this table is used to keep the properties of equipment sent to some places for reconstructure.
-     * first we create an instance from the the class of its model.
-     * then through request arguments we will retrieve values from its form located in our view and then we save it into "ansaldo_send_bazsazi_ghataats" table
-     * then we send a message and the the id of the group which this part belongs to through a json file to our view.
-    */
+
     public  function store(Request $request){
         $id_user=auth()->user()->id;
         $atp= new Ansaldo_send_bazsazi_ghataat();
