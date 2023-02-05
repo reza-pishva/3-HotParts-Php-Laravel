@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 
-\use App\Grouprole;
+use App\Grouprole;
 use App\Groupuser;
 use App\Request_level;
 use App\Role;
