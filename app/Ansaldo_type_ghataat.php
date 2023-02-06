@@ -10,9 +10,6 @@ class Ansaldo_type_ghataat extends Model
         'GHATAAT_NAME',
         'TIME_STANDARD',
         'TYPE_CODE',
-        'SET_COUNT',
-        'COUNTB_REJECT',
-        'TIME_REJECT',
-        'ID_USER',
+        
     ];
 }
