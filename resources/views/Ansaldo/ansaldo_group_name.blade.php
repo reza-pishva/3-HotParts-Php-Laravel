@@ -13,7 +13,30 @@
             }
             bootstrap.Toast.Default.delay = 2000
           
-          
+            $("#DATE_BEGIN1").persianDatepicker({
+                format: 'YYYY/MM/DD'
+            });
+            $("#DATE_BEGINR").persianDatepicker({
+                format: 'YYYY/MM/DD'
+            });
+            $("#DATE_ENDR").persianDatepicker({
+                format: 'YYYY/MM/DD'
+            });
+            $("#DATE_SHAMSI").persianDatepicker({
+                format: 'YYYY/MM/DD'
+            });
+            $("#DATE_SHAMSI2").persianDatepicker({
+                format: 'YYYY/MM/DD'
+            });
+            $("#DATE_BEGIN1_EDIT").persianDatepicker({
+                format: 'YYYY/MM/DD'
+            });
+            $("#DATE_SHAMSI_EDIT").persianDatepicker({
+                format: 'YYYY/MM/DD'
+            });
+            $("#DATE_SHAMSI2_EDIT").persianDatepicker({
+                format: 'YYYY/MM/DD'
+            });
           
             $("#add_send").on('click',function (event) {
                 $('#myModal1').modal('show');
