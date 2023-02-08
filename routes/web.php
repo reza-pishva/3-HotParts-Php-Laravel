@@ -15,13 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-//Ansaldo
-Route::get('/bazsaz-form','AnsaldoBazsazController@create');
 
-Route::get('/bazsaz-total','AnsaldoBazsazController@bazsaz_total');
-Route::post('/bazsaz-store', 'AnsaldoBazsazController@bazsaz_store')->name('bazsaz.store');
-Route::delete('/bazsaz-delete/{id}', 'AnsaldoBazsazController@delete');
-Route::post('/bazsaz-edit', 'AnsaldoBazsazController@bazsaz_edit')->name('bazsaz.edit');
 
 Route::get('/seller-total','AnsaldoSellerController@seller_total');
 Route::post('/seller-store', 'AnsaldoSellerController@seller_store')->name('seller.store');
