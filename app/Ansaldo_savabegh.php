@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ansaldo_savabegh extends Model
 {
-    protected $fillable = [
-        
+    protected $fillable = [        
         'ID_E',
         'TIME_WORK',
         'DAMAGE_PERCENT',
