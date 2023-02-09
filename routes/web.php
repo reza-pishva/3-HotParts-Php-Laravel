@@ -14,17 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
-Route::get('/vue-individuals-presence','EnteringindividualController@vue_individuals_presence');
-Route::get('/vue-total-individuals','EnteringindividualController@vue_total_individuals');
-Route::get('/vue-individuals-with-permission/{date1}/{date2}','EnteringindividualController@vue_individuals_with_permission');
-Route::get('/vue-individuals-without-permission/{date1}/{date2}','EnteringindividualController@vue_individuals_without_permission');
-Route::get('/vue-individuals-karkard/{date1}/{date2}/{id}','EnteringindividualController@vue_individuals_karkard');
-Route::get('/vue-individuals-karkard2/{date1}/{date2}','EnteringindividualController@vue_individuals_karkard2');
-Route::get('/vue-individuals-enterexit/{date1}/{date2}/{id}','EnteringindividualController@vue_individuals_enterexit');
-Route::get('/vue-waiting-for-exit/{date1}/{date2}','EnteringindividualController@vue_waiting_for_exit');
-Route::get('/vue-waiting-for-enter/{date1}/{date2}','EnteringindividualController@vue_waiting_for_enter');
-Route::get('/vue-in-process/{date1}/{date2}','EnteringindividualController@vue_in_process');
-Route::get('/vue-not-accepted/{date1}/{date2}','EnteringindividualController@vue_not_accepted');
+
 //Ansaldo
 Route::get('/bazsaz-form','AnsaldoBazsazController@create');
 
