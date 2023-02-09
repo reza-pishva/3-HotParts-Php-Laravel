@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
-
+Route::get('/cal-kar/{date1}/{date2}','EnteringindividualController@calculate_karkard');
+Route::get('/datetest','CarController@datetest');
 //Ansaldo
 Route::get('/bazsaz-form','AnsaldoBazsazController@create');
 
