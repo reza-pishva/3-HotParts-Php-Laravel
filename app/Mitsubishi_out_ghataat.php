@@ -7,14 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Mitsubishi_out_ghataat extends Model
 {
     protected $fillable = [
-        'ID_TG',
-        'ID_USER',
-        'DATE_BEGIN',
-        'GROUP_COUNT',
-        'DISCRIPTION',
-        'LOCATION_NAME',
-        'DATE_BEGIN',
-        'OUT_IN',
-        'ID_BA',
+       
     ];
 }
