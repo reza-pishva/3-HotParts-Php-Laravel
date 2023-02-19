@@ -2,7 +2,7 @@
 @section('content')
 <script>
     $(document).ready(function() {
-        
+        bootstrap.Toast.Default.delay = 2000
         $("#add_bazsaz").on('click',function (event) {
             event.preventDefault();
             $(".addtamiratty").hide()
