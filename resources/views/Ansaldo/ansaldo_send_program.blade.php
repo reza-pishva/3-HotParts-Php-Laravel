@@ -2,14 +2,7 @@
 @section('content')
     <script>
         $(document).ready(function() {
-            $("#DATE_BEGIN1").prop('readonly', true)
-            $("#DATE_BEGINR").prop('readonly', true)
-            $("#DATE_ENDR").prop('readonly', true)
-            $("#DATE_SHAMSI").persianDatepicker({
-                format: 'YYYY/MM/DD'
-            });
-
-            $("#DATE_BEGIN1_EDIT").prop('readonly', true)
+           
             function toFarsiNumber(n) {
                 const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
 
