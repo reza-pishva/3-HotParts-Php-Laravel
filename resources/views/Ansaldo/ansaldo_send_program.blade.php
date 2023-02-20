@@ -19,7 +19,7 @@
                     .map(x => farsiDigits[x])
                     .join('');
             }
-            bootstrap.Toast.Default.delay = 2000
+            bootstrap.Toast.Default.delay = 3000
             $("#DATE_BEGIN1").persianDatepicker({
                 format: 'YYYY/MM/DD'
             });
