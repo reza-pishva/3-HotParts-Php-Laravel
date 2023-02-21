@@ -1,4 +1,6 @@
-
+@extends('layouts.ansaldo_layouts.app_base_tables')
+@section('content')
+<script>
     $(document).ready(function() {
         bootstrap.Toast.Default.delay = 2000
         $("#add_bazsaz").on('click',function (event) {
