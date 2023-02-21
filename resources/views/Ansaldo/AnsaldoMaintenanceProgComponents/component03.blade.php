@@ -1,3 +1,24 @@
+<div class="modal fade" id="myModal1" style="direction: rtl;margin-top: 70px">
+    <div class="modal-dialog modal-md" style="margin-top: 25px">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header bg-dark" style="height: 35px;padding-top: 5px;" >
+                <div class="row" style="width: 100%">
+                    <div class="col-6"><p class="modal-title" style="color: white;font-family: Tahoma;font-size: small;display: inline">فرم اصلاح اطلاعات تعمیرات</p></div>
+                    <div class="col-6">
+                        <div class="row" style="width: 100%">
+                            <div class="col-10">.</div>
+                            <div class="col-2">
+                                <button type="button" class="close" data-dismiss="modal" style="text-align: center;display: inline;color: white">&times;</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
 
             <!-- Edit form -->
             <div class="container"  style="margin: auto;background-color:lightgray;height: 370px ">
