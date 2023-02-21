@@ -2,7 +2,15 @@
 @section('content')
 <script>
     $(document).ready(function() {
+        function toFarsiNumber(n) {
+            const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
 
+            return n
+                .toString()
+                .split('')
+                .map(x => farsiDigits[x])
+                .join('');
+        }
         bootstrap.Toast.Default.delay = 2000
         $("#DATE_BEGIN_SH").prop('readonly', true)
         $("#DATE_END_SH").prop('readonly', true)
