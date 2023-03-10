@@ -1,5 +1,28 @@
 
 
+﻿<?php
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Auth::routes();
+//Ansaldo
+Route::get('/bazsaz-form','AnsaldoBazsazController@create');
+Route::get('/bazsaz-total','AnsaldoBazsazController@bazsaz_total');
+Route::post('/bazsaz-store', 'AnsaldoBazsazController@bazsaz_store')->name('bazsaz.store');
+Route::delete('/bazsaz-delete/{id}', 'AnsaldoBazsazController@delete');
+Route::post('/bazsaz-edit', 'AnsaldoBazsazController@bazsaz_edit')->name('bazsaz.edit');
+
 Route::get('/seller-total','AnsaldoSellerController@seller_total');
 Route::post('/seller-store', 'AnsaldoSellerController@seller_store')->name('seller.store');
 Route::delete('/seller-delete/{id}', 'AnsaldoSellerController@delete');
