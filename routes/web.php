@@ -157,25 +157,6 @@ Route::post('/saz-edit', 'AnsaldoSazandehController@edit')->name('saz.edit');
 Route::get('/group-change','AnsaldoGroupChangeController@create');
 Route::get('/group-total2/{id}','AnsaldoGroupChangeController@total2');
 
-Route::get('/savabegh-form','AnsaldoSavabeghController@create');
-Route::get('/savabegh-search-by-ide','AnsaldoSavabeghController@create_search_by_ide');
-Route::get('/savabegh-insert/{type_sabegheh}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{id_t1}/{id_sub}/{id_g_global}/{insert_type}/{ghataat4}/{radif1}/{radif2}/{program}/{id_t_bazsazi1}/{id_t_bazsazi2}','AnsaldoSavabeghController@savabegh_insert');
-Route::get('/savabegh-update/{sav_type}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{insert_type}/{id_s}/{id_g_global}/{id_sub}/{id_t1}/{id_e}/{id_t_prev}/{radif1}/{radif2}','AnsaldoSavabeghController@savabegh_update');
-Route::get('/savabegh-delete/{sav_type}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{id_t1}/{id_sub}/{id_g_global}/{insert_type}/{id_s}/{id_t2}/{id_t3}/{ghataat4}/{radif1}/{radif2}/{id_t_bazsazi1}/{id_t_bazsazi2}/{radif3}','AnsaldoSavabeghController@savabegh_delete');
-Route::get('/inserted-rows/{id}','AnsaldoSavabeghController@inserted_rows');
-Route::get('/get-history/{id}','AnsaldoSavabeghController@get_history');
-Route::delete('/history-delete/{id}', 'AnsaldoSavabeghController@delete');
-Route::get('/get-history-tamirat-prog/{id}','AnsaldoTamiratProgramController@get_history');
-Route::get('/get-history-bazsazi-prog/{id}','AnsaldoResvBazsaziGhataatController@get_history');
-Route::get('/get-history-bazsazi-prog2/{id}','AnsaldoResvBazsaziGhataatController@get_history2');
-Route::get('/get-history-anbar-prog/{id}','AnsaldoStoreProgramOutController@get_history');
-Route::get('/get-history-anbar-prog2/{id}','AnsaldoStoreProgramOutController@get_history2');
-Route::get('/get-history-buy-prog/{id}','AnsaldoBuyGhataatController@get_history');
-Route::get('/get-history-out-prog/{id}','AnsaldoBuyGhataatController@get_history');
-Route::get('/get-history-enter_exit-prog/{id}','AnsaldoOutGhataatController@get_history');
 
-
-Route::get('/jalali','AnsaldoTamiratProgramController@convert_to_jalali');
-Route::get('/update_exit_no','AnsaldoStoreProgramOutController@update_exit_no');
 
 
