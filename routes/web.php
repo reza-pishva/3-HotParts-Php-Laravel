@@ -1,4 +1,51 @@
+﻿<?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Auth::routes();
+//Ansaldo
+Route::get('/bazsaz-form','AnsaldoBazsazController@create');
+Route::get('/bazsaz-total','AnsaldoBazsazController@bazsaz_total');
+Route::post('/bazsaz-store', 'AnsaldoBazsazController@bazsaz_store')->name('bazsaz.store');
+Route::delete('/bazsaz-delete/{id}', 'AnsaldoBazsazController@delete');
+Route::post('/bazsaz-edit', 'AnsaldoBazsazController@bazsaz_edit')->name('bazsaz.edit');
+
+Route::get('/seller-total','AnsaldoSellerController@seller_total');
+Route::post('/seller-store', 'AnsaldoSellerController@seller_store')->name('seller.store');
+Route::delete('/seller-delete/{id}', 'AnsaldoSellerController@delete');
+Route::post('/seller-edit', 'AnsaldoSellerController@seller_edit')->name('seller.edit');
+
+Route::get('/tamirkar-total','AnsaldoTamirkarController@tamirkar_total');
+Route::post('/tamirkar-store', 'AnsaldoTamirkarController@tamirkar_store')->name('tamirkar.store');
+Route::delete('/tamirkar-delete/{id}', 'AnsaldoTamirkarController@delete');
+Route::post('/tamirkar-edit', 'AnsaldoTamirkarController@tamirkar_edit')->name('tamirkar.edit');
+Route::get('/savabegh-form','AnsaldoSavabeghController@create');
+Route::get('/savabegh-search-by-ide','AnsaldoSavabeghController@create_search_by_ide');
+Route::get('/savabegh-insert/{type_sabegheh}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{id_t1}/{id_sub}/{id_g_global}/{insert_type}/{ghataat4}/{radif1}/{radif2}/{program}/{id_t_bazsazi1}/{id_t_bazsazi2}','AnsaldoSavabeghController@savabegh_insert');
+Route::get('/savabegh-update/{sav_type}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{insert_type}/{id_s}/{id_g_global}/{id_sub}/{id_t1}/{id_e}/{id_t_prev}/{radif1}/{radif2}','AnsaldoSavabeghController@savabegh_update');
+Route::get('/savabegh-delete/{sav_type}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{id_t1}/{id_sub}/{id_g_global}/{insert_type}/{id_s}/{id_t2}/{id_t3}/{ghataat4}/{radif1}/{radif2}/{id_t_bazsazi1}/{id_t_bazsazi2}/{radif3}','AnsaldoSavabeghController@savabegh_delete');
+Route::get('/inserted-rows/{id}','AnsaldoSavabeghController@inserted_rows');
+Route::get('/get-history/{id}','AnsaldoSavabeghController@get_history');
+Route::delete('/history-delete/{id}', 'AnsaldoSavabeghController@delete');
+Route::get('/get-history-tamirat-prog/{id}','AnsaldoTamiratProgramController@get_history');
+Route::get('/get-history-bazsazi-prog/{id}','AnsaldoResvBazsaziGhataatController@get_history');
+Route::get('/get-history-bazsazi-prog2/{id}','AnsaldoResvBazsaziGhataatController@get_history2');
+Route::get('/get-history-anbar-prog/{id}','AnsaldoStoreProgramOutController@get_history');
+Route::get('/get-history-anbar-prog2/{id}','AnsaldoStoreProgramOutController@get_history2');
+Route::get('/get-history-buy-prog/{id}','AnsaldoBuyGhataatController@get_history');
+Route::get('/get-history-out-prog/{id}','AnsaldoBuyGhataatController@get_history');
+Route::get('/get-history-enter_exit-prog/{id}','AnsaldoOutGhataatController@get_history');
 
 
 
