@@ -1,4 +1,116 @@
+﻿<?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Auth::routes();
+//Ansaldo
+Route::get('/bazsaz-form','AnsaldoBazsazController@create');
+Route::get('/bazsaz-total','AnsaldoBazsazController@bazsaz_total');
+Route::post('/bazsaz-store', 'AnsaldoBazsazController@bazsaz_store')->name('bazsaz.store');
+Route::delete('/bazsaz-delete/{id}', 'AnsaldoBazsazController@delete');
+Route::post('/bazsaz-edit', 'AnsaldoBazsazController@bazsaz_edit')->name('bazsaz.edit');
+
+Route::get('/seller-total','AnsaldoSellerController@seller_total');
+Route::post('/seller-store', 'AnsaldoSellerController@seller_store')->name('seller.store');
+Route::delete('/seller-delete/{id}', 'AnsaldoSellerController@delete');
+Route::post('/seller-edit', 'AnsaldoSellerController@seller_edit')->name('seller.edit');
+
+Route::get('/tamirkar-total','AnsaldoTamirkarController@tamirkar_total');
+Route::post('/tamirkar-store', 'AnsaldoTamirkarController@tamirkar_store')->name('tamirkar.store');
+Route::delete('/tamirkar-delete/{id}', 'AnsaldoTamirkarController@delete');
+Route::post('/tamirkar-edit', 'AnsaldoTamirkarController@tamirkar_edit')->name('tamirkar.edit');
+Route::get('/savabegh-form','AnsaldoSavabeghController@create');
+Route::get('/savabegh-search-by-ide','AnsaldoSavabeghController@create_search_by_ide');
+Route::get('/savabegh-insert/{type_sabegheh}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{id_t1}/{id_sub}/{id_g_global}/{insert_type}/{ghataat4}/{radif1}/{radif2}/{program}/{id_t_bazsazi1}/{id_t_bazsazi2}','AnsaldoSavabeghController@savabegh_insert');
+Route::get('/savabegh-update/{sav_type}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{insert_type}/{id_s}/{id_g_global}/{id_sub}/{id_t1}/{id_e}/{id_t_prev}/{radif1}/{radif2}','AnsaldoSavabeghController@savabegh_update');
+Route::get('/savabegh-delete/{sav_type}/{mizan_kharabi}/{vaz_nasb}/{karkard}/{description}/{id_t1}/{id_sub}/{id_g_global}/{insert_type}/{id_s}/{id_t2}/{id_t3}/{ghataat4}/{radif1}/{radif2}/{id_t_bazsazi1}/{id_t_bazsazi2}/{radif3}','AnsaldoSavabeghController@savabegh_delete');
+Route::get('/inserted-rows/{id}','AnsaldoSavabeghController@inserted_rows');
+Route::get('/get-history/{id}','AnsaldoSavabeghController@get_history');
+Route::delete('/history-delete/{id}', 'AnsaldoSavabeghController@delete');
+Route::get('/get-history-tamirat-prog/{id}','AnsaldoTamiratProgramController@get_history');
+Route::get('/get-history-bazsazi-prog/{id}','AnsaldoResvBazsaziGhataatController@get_history');
+Route::get('/get-history-bazsazi-prog2/{id}','AnsaldoResvBazsaziGhataatController@get_history2');
+Route::get('/get-history-anbar-prog/{id}','AnsaldoStoreProgramOutController@get_history');
+Route::get('/get-history-anbar-prog2/{id}','AnsaldoStoreProgramOutController@get_history2');
+Route::get('/get-history-buy-prog/{id}','AnsaldoBuyGhataatController@get_history');
+Route::get('/get-history-out-prog/{id}','AnsaldoBuyGhataatController@get_history');
+Route::get('/get-history-enter_exit-prog/{id}','AnsaldoOutGhataatController@get_history');
+
+
+
+Route::get('/jalali','AnsaldoTamiratProgramController@convert_to_jalali');
+Route::get('/update_exit_no','AnsaldoStoreProgramOutController@update_exit_no');
+Route::get('/tamiratty-total','AnsaldoTamirattyController@tamiratty_total');
+Route::post('/tamiratty-store', 'AnsaldoTamirattyController@tamiratty_store')->name('tamiratty.store');
+Route::delete('/tamiratty-delete/{id}', 'AnsaldoTamirattyController@delete');
+Route::post('/tamiratty-edit', 'AnsaldoTamirattyController@tamiratty_edit')->name('tamiratty.edit');
+
+Route::get('/typgha-total','AnsaldoTypGhaController@typgha_total');
+Route::post('/typgha-store', 'AnsaldoTypGhaController@store')->name('typgha.store');
+Route::delete('/typgha-delete/{id}', 'AnsaldoTypGhaController@delete');
+Route::post('/typgha-edit', 'AnsaldoTypGhaController@edit')->name('typgha.edit');
+
+Route::get('/nir-total','AnsaldoNirNaController@total');
+Route::post('/nir-store', 'AnsaldoNirNaController@store')->name('nir.store');
+Route::delete('/nir-delete/{id}', 'AnsaldoNirNaController@delete');
+Route::post('/nir-edit', 'AnsaldoNirNaController@edit')->name('nir.edit');
+
+Route::get('/un-total','AnsaldoUniNuController@total');
+Route::post('/un-store', 'AnsaldoUniNuController@store')->name('un.store');
+Route::delete('/un-delete/{id}', 'AnsaldoUniNuController@delete');
+Route::post('/un-edit', 'AnsaldoUniNuController@edit')->name('un.edit');
+
+Route::get('/tapr-form','AnsaldoTamiratProgramController@create');
+Route::get('/tapr-total','AnsaldoTamiratProgramController@total');
+Route::post('/tapr-store', 'AnsaldoTamiratProgramController@store')->name('tp.store');
+Route::delete('/tapr-delete/{id}', 'AnsaldoTamiratProgramController@delete');
+Route::post('/tapr-edit', 'AnsaldoTamiratProgramController@edit')->name('tp.edit');
+Route::post('/tapr-rep', 'AnsaldoTamiratProgramController@report_queryp')->name('tp.store');
+Route::get('/tapr-rep2','AnsaldoTamiratProgramController@report_queryp2');
+Route::get('/tapr-rep3/{id}','AnsaldoTamiratProgramController@report_queryp3');
+
+Route::get('/tasepr-form','AnsaldoSendBazsaziGhataatController@create');
+Route::post('/tasepr-store', 'AnsaldoSendBazsaziGhataatController@store')->name('tps.store');
+Route::get('/tasepr-total','AnsaldoSendBazsaziGhataatController@total');
+Route::get('/tasepr-total-today','AnsaldoSendBazsaziGhataatController@total_today');
+Route::get('/tasepr-onlyone','AnsaldoSendBazsaziGhataatController@onlyone');
+Route::get('/tasepr-onlyone2/{id}','AnsaldoSendBazsaziGhataatController@onlyone2');
+Route::post('/tapsr-rep', 'AnsaldoSendBazsaziGhataatController@report_queryp')->name('tps2.store');
+Route::get('/tapsr-rep2','AnsaldoSendBazsaziGhataatController@report_queryp2');
+Route::get('/tapsr-rep3/{id}','AnsaldoSendBazsaziGhataatController@report_queryp3');
+Route::get('/tapsr-rep4/{id}','AnsaldoSendBazsaziGhataatController@report_queryp4');
+Route::post('/tapsr-edit', 'AnsaldoSendBazsaziGhataatController@edit')->name('tps.edit');
+Route::delete('/tapsr-delete/{id}', 'AnsaldoSendBazsaziGhataatController@delete');
+
+Route::post('/tarepr-store', 'AnsaldoResvBazsaziGhataatController@store')->name('tpra.store');
+Route::get('/resvs_for_send/{id}','AnsaldoResvBazsaziGhataatController@resvs_for_send');
+Route::post('/taprr-edit', 'AnsaldoResvBazsaziGhataatController@edit')->name('tpr2.edit');
+Route::delete('/taprr-delete/{id}', 'AnsaldoResvBazsaziGhataatController@delete');
+
+Route::get('/tain-form','AnsaldoStoreProgramInController@create');
+Route::post('/tain-store', 'AnsaldoStoreProgramInController@store')->name('tpi.store');
+Route::get('/tain-total','AnsaldoStoreProgramInController@total');
+Route::get('/tain-total-today','AnsaldoStoreProgramInController@total_today');
+Route::get('/tain-onlyone','AnsaldoStoreProgramInController@onlyone');
+Route::get('/tain-onlyone2/{id}','AnsaldoStoreProgramInController@onlyone2');
+Route::post('/tain-rep', 'AnsaldoStoreProgramInController@report_queryp')->name('tpi2.store');
+Route::post('/tain-rep3', 'AnsaldoStoreProgramInController@report_queryp3')->name('tpi3.store');
+Route::get('/tain-rep4/{id}','AnsaldoStoreProgramInController@report_queryp4');
+Route::get('/tain-rep5/{id}','AnsaldoStoreProgramInController@report_queryp5');
+Route::get('/tain-rep2','AnsaldoStoreProgramInController@report_queryp2');
+Route::post('/tain-edit', 'AnsaldoStoreProgramInController@edit')->name('tpi.edit');
+Route::delete('/tain-delete/{id}', 'AnsaldoStoreProgramInController@delete');
 
 Route::post('/taout-store', 'AnsaldoStoreProgramOutController@store')->name('tpo.store');
 Route::get('/resvs_for_out/{id}','AnsaldoStoreProgramOutController@resvs_for_out');
