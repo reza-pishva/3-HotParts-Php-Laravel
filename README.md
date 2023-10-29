@@ -4,4 +4,4 @@
   
 ![Education management system](enterexit23.png)
 
-By clicking [here](https://reza-pishva.github.io/3-HotParts-Php-Laravel/) you can see some descriptions related to the project
+By clicking [here](https://reza-pishva.github.io/3-HotParts-Php-Laravel/) you can see some descriptions in relation to the project
